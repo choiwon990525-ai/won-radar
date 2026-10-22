@@ -1,0 +1,647 @@
+{
+ "note": "레퍼런스 후보. check_refs.py가 GitHub 서버에서 링크·유튜브 활동을 확인한 뒤, 확인된 것만 노션 레퍼런스 DB와 radar/references.json으로 옮긴다.",
+ "items": [
+  {
+   "name": "VLR.gg — 경기·통계·포럼",
+   "url": "https://www.vlr.gg/",
+   "cat": [
+    "메타",
+    "통계 툴",
+    "VOD·관전"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "VLR.gg — 선수 통계",
+   "url": "https://www.vlr.gg/stats",
+   "cat": [
+    "메타",
+    "통계 툴"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "Liquipedia VALORANT",
+   "url": "https://liquipedia.net/valorant/Main_Page",
+   "cat": [
+    "메타",
+    "패치",
+    "VOD·관전"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "rib.gg — 프로 경기 2D 리플레이·통계",
+   "url": "https://www.rib.gg/",
+   "cat": [
+    "메타",
+    "통계 툴",
+    "전략"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "일부 유료"
+  },
+  {
+   "name": "THESPIKE.gg — 뉴스·통계",
+   "url": "https://www.thespike.gg/",
+   "cat": [
+    "메타",
+    "통계 툴"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "bo3.gg — VALORANT 통계",
+   "url": "https://bo3.gg/valorant",
+   "cat": [
+    "메타",
+    "통계 툴"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "tracker.gg — VALORANT 전적",
+   "url": "https://tracker.gg/valorant",
+   "cat": [
+    "통계 툴"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "일부 유료"
+  },
+  {
+   "name": "Blitz — VALORANT",
+   "url": "https://blitz.gg/valorant",
+   "cat": [
+    "메타",
+    "통계 툴",
+    "라인업"
+   ],
+   "format": "툴·앱",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "일부 유료",
+   "memo": "오버레이 기능은 경기 중 사용 금지 원칙"
+  },
+  {
+   "name": "Mobalytics — VALORANT",
+   "url": "https://mobalytics.gg/valorant",
+   "cat": [
+    "메타",
+    "통계 툴"
+   ],
+   "format": "툴·앱",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "일부 유료"
+  },
+  {
+   "name": "METAsrc — VALORANT",
+   "url": "https://www.metasrc.com/valorant",
+   "cat": [
+    "메타",
+    "통계 툴"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "OP.GG — VALORANT",
+   "url": "https://valorant.op.gg/",
+   "cat": [
+    "통계 툴",
+    "메타"
+   ],
+   "format": "사이트·DB",
+   "lang": "한국어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "DAK.GG — VALORANT",
+   "url": "https://dak.gg/valorant",
+   "cat": [
+    "통계 툴",
+    "메타"
+   ],
+   "format": "사이트·DB",
+   "lang": "한국어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "VALORANT 패치 노트 (한국어)",
+   "url": "https://playvalorant.com/ko-kr/news/tags/patch-notes/",
+   "cat": [
+    "패치"
+   ],
+   "format": "문서·가이드",
+   "lang": "한국어",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "VALORANT Patch Notes (영어)",
+   "url": "https://playvalorant.com/en-us/news/tags/patch-notes/",
+   "cat": [
+    "패치"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "VALORANT 공식 뉴스 (한국어)",
+   "url": "https://playvalorant.com/ko-kr/news/",
+   "cat": [
+    "패치"
+   ],
+   "format": "사이트·DB",
+   "lang": "한국어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "VALORANT 공식 맵 소개 (한국어)",
+   "url": "https://playvalorant.com/ko-kr/maps/",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "문서·가이드",
+   "lang": "한국어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "VALORANT 공식 요원 소개 (한국어)",
+   "url": "https://playvalorant.com/ko-kr/agents/",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "문서·가이드",
+   "lang": "한국어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "VALORANT Esports 공식 (일정·결과)",
+   "url": "https://valorantesports.com/",
+   "cat": [
+    "VOD·관전"
+   ],
+   "format": "사이트·DB",
+   "lang": "기타",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "VALORANT Fandom 위키",
+   "url": "https://valorant.fandom.com/wiki/VALORANT_Wiki",
+   "cat": [
+    "기초 개념",
+    "패치"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "나무위키 — VALORANT",
+   "url": "https://namu.wiki/w/VALORANT",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "문서·가이드",
+   "lang": "한국어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "Riot 개발자 정책 — VALORANT",
+   "url": "https://support-developer.riotgames.com/hc/en-us/articles/22698769097107-VALORANT",
+   "cat": [
+    "통계 툴"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "HenrikDev VALORANT API 문서",
+   "url": "https://docs.henrikdev.xyz/",
+   "cat": [
+    "통계 툴"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "valorant-api.com — 게임 에셋",
+   "url": "https://valorant-api.com/",
+   "cat": [
+    "통계 툴"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "lineupsvalorant.com — 커뮤니티 라인업 DB",
+   "url": "https://lineupsvalorant.com/",
+   "cat": [
+    "라인업"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "무료",
+   "memo": "커뮤니티 제출 — 커스텀 검증 후 사용"
+  },
+  {
+   "name": "tricks.gg — VALORANT 라인업",
+   "url": "https://tricks.gg/valorant/lineups",
+   "cat": [
+    "라인업"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "Blitz — 라인업",
+   "url": "https://blitz.gg/valorant/lineups",
+   "cat": [
+    "라인업"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "일부 유료"
+  },
+  {
+   "name": "ValoPlant — 작전판",
+   "url": "https://valoplant.gg/",
+   "cat": [
+    "전략",
+    "라인업"
+   ],
+   "format": "툴·앱",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "일부 유료"
+  },
+  {
+   "name": "YouTube · AverageJonas (라인업)",
+   "youtube": "@AverageJonas",
+   "cat": [
+    "라인업"
+   ],
+   "format": "유튜브 채널",
+   "agents": [
+    "소바",
+    "바이퍼",
+    "킬조이"
+   ],
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "YouTube · VALORANT Champions Tour",
+   "youtube": "@valorantesports",
+   "cat": [
+    "VOD·관전"
+   ],
+   "format": "유튜브 채널",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "YouTube · VCT Pacific",
+   "youtube": "@VCTPacific",
+   "cat": [
+    "VOD·관전"
+   ],
+   "format": "유튜브 채널",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "YouTube · VALORANT 공식",
+   "youtube": "@VALORANT",
+   "cat": [
+    "패치"
+   ],
+   "format": "유튜브 채널",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "YouTube · 발로란트 공식 한국",
+   "youtube": "@VALORANTKR",
+   "cat": [
+    "패치"
+   ],
+   "format": "유튜브 채널",
+   "lang": "한국어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "YouTube · Thinking Man's Valorant",
+   "youtube": "@ThinkingMansValorant",
+   "cat": [
+    "전략",
+    "메타",
+    "VOD·관전"
+   ],
+   "format": "유튜브 채널",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "YouTube · Woohoojin",
+   "youtube": "@Woohoojin",
+   "cat": [
+    "기초 개념",
+    "전략"
+   ],
+   "format": "유튜브 채널",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료",
+   "memo": "레디언트 계정 부스팅 인정 이력(2024-03 보도)"
+  },
+  {
+   "name": "YouTube · Skill Capped Valorant",
+   "youtube": "@SkillCappedValorant",
+   "cat": [
+    "기초 개념",
+    "전략"
+   ],
+   "format": "유튜브 채널",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "일부 유료"
+  },
+  {
+   "name": "YouTube · tarik (워치파티)",
+   "youtube": "@tarik",
+   "cat": [
+    "VOD·관전"
+   ],
+   "format": "유튜브 채널",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "YouTube · 낄뱅",
+   "youtube": "@낄뱅",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "유튜브 채널",
+   "lang": "한국어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "Guild Order — VOD 리뷰 규율",
+   "url": "https://guildorder.com/games/valorant/guides/vod-review-discipline",
+   "cat": [
+    "전략",
+    "기초 개념"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "Guild Order — 콜·커뮤니케이션",
+   "url": "https://guildorder.com/games/valorant/guides/comms-and-callouts",
+   "cat": [
+    "전략",
+    "기초 개념"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "Guild Order — 스크림 구조와 문화",
+   "url": "https://guildorder.com/games/valorant/guides/scrim-structure-and-culture",
+   "cat": [
+    "전략"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "British Esports — 스크림 에티켓 (VALORANT)",
+   "url": "https://britishesports.org/the-hub/about-esports/scrim-etiquette-valorant/",
+   "cat": [
+    "전략"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "Voltaic — 시작 가이드",
+   "url": "https://blog.voltaic.gg/getting-started-with-voltaic/",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "Voltaic VALORANT 벤치마크 (Aimlabs 통계)",
+   "url": "https://aimlab-stats.com/benchmarks/kdufpss/voltaic-val",
+   "cat": [
+    "통계 툴",
+    "기초 개념"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "Aimlabs",
+   "url": "https://aimlabs.com/",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "툴·앱",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "일부 유료"
+  },
+  {
+   "name": "KovaaK's",
+   "url": "https://kovaaks.com/",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "툴·앱",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "유료"
+  },
+  {
+   "name": "ProSettings — VALORANT 프로 설정",
+   "url": "https://prosettings.net/games/valorant/",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "사이트·DB",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "ProSettings — 랭크별 팁",
+   "url": "https://prosettings.net/blog/valorant-tips-for-each-rank/",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "문서·가이드",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "Insights.gg — VOD 리뷰 툴",
+   "url": "https://insights.gg/games/valorant",
+   "cat": [
+    "통계 툴",
+    "VOD·관전"
+   ],
+   "format": "툴·앱",
+   "lang": "영어",
+   "use_level": "후보",
+   "price": "일부 유료"
+  },
+  {
+   "name": "Outplayed — 하이라이트 녹화",
+   "url": "https://outplayed.tv/",
+   "cat": [
+    "통계 툴",
+    "VOD·관전"
+   ],
+   "format": "툴·앱",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "일부 유료"
+  },
+  {
+   "name": "VALORANT 공식 — 리플레이 안내 (한국어)",
+   "url": "https://playvalorant.com/ko-kr/news/dev/replays-everything-you-need-to-know/",
+   "cat": [
+    "VOD·관전"
+   ],
+   "format": "문서·가이드",
+   "lang": "한국어",
+   "use_level": "바로 씀",
+   "price": "무료"
+  },
+  {
+   "name": "r/ValorantCompetitive",
+   "url": "https://www.reddit.com/r/ValorantCompetitive/",
+   "cat": [
+    "메타",
+    "VOD·관전"
+   ],
+   "format": "커뮤니티",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "r/VALORANT",
+   "url": "https://www.reddit.com/r/VALORANT/",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "커뮤니티",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "발로란트 인벤",
+   "url": "https://valorant.inven.co.kr/",
+   "cat": [
+    "메타",
+    "패치"
+   ],
+   "format": "커뮤니티",
+   "lang": "한국어",
+   "use_level": "후보",
+   "price": "무료"
+  },
+  {
+   "name": "아카라이브 발로란트 채널",
+   "url": "https://arca.live/b/valorant",
+   "cat": [
+    "기초 개념"
+   ],
+   "format": "커뮤니티",
+   "lang": "한국어",
+   "use_level": "참고만",
+   "price": "무료"
+  },
+  {
+   "name": "YouTube · Plat Chat VALORANT",
+   "youtube": "@PlatChatValorant",
+   "cat": [
+    "메타",
+    "VOD·관전"
+   ],
+   "format": "유튜브 채널",
+   "lang": "영어",
+   "use_level": "참고만",
+   "price": "무료"
+  }
+ ]
+}

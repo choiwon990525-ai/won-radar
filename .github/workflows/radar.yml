@@ -1,0 +1,85 @@
+name: WON 레이더 수집
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"   # 3시간마다 (UTC :17 → KST :17)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "radar/**"
+      - "scripts/radar/**"
+      - "peekers-advantage.html"
+      - ".github/workflows/radar.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: radar
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 지난 데이터 가져오기
+        run: |
+          mkdir -p _prev
+          echo '{}' > _prev/data.json
+          echo '{}' > _prev/refcheck.json
+          if git fetch --depth=1 origin gh-pages 2>/dev/null; then
+            git show FETCH_HEAD:data.json > _prev/data.json 2>/dev/null || echo '{}' > _prev/data.json
+            git show FETCH_HEAD:refcheck.json > _prev/refcheck.json 2>/dev/null || echo '{}' > _prev/refcheck.json
+          else
+            # 처음 한 번: 예전 저장소(choiwon990525) 주소에서 이어받기 — 없거나 JSON 이 아니면 빈 것으로
+            for f in data.json refcheck.json; do
+              curl -fsSL --max-time 20 "https://choiwon990525-ai.github.io/choiwon990525/$f" -o "_prev/$f.new" \
+                && python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "_prev/$f.new" \
+                && mv "_prev/$f.new" "_prev/$f" \
+                || { rm -f "_prev/$f.new"; echo "::warning::예전 주소에서 $f 를 못 이어받음 — 빈 것에서 시작"; }
+            done
+          fi
+
+      - name: 브리핑용 SDK (키가 있을 때만)
+        if: env.ANTHROPIC_API_KEY != ''
+        run: python3 -m pip install --quiet anthropic
+
+      - name: 수집
+        run: python3 scripts/radar/collect.py --sources scripts/radar/sources.json --prev _prev/data.json --out _site/data.json
+
+      - name: 레퍼런스 링크 점검 (같은 링크는 7일에 한 번)
+        run: >
+          python3 scripts/radar/check_refs.py
+          --inputs scripts/radar/ref_candidates.json radar/references.json
+          --prev _prev/refcheck.json --yt-cache _site/data.json --out _site/refcheck.json
+
+      - name: 공개 전 확인 (레퍼런스에 용도·반 칸이나 반 이름이 있으면 멈춤)
+        env:
+          RADAR_HIDE_WORDS: ${{ secrets.RADAR_HIDE_WORDS }}
+        run: >
+          python3 scripts/radar/build_refs.py --check
+          radar/references.json scripts/radar/notion_refs_export.json scripts/radar/ref_candidates.json
+
+      - name: 사이트 만들기
+        run: |
+          cp -r radar/. _site/
+          mkdir -p _site/peek && cp peekers-advantage.html _site/peek/index.html   # 피커스 어드밴티지 → /peek/
+          touch _site/.nojekyll
+
+      - name: gh-pages로 배포
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd _site
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "radar: $(date -u +%Y-%m-%dT%H:%MZ) 수집"
+          git push -qf "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
