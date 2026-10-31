@@ -1,0 +1,511 @@
+{
+ "generated_at": "2026-10-31T19:19:17Z",
+ "results": {
+  "url:https://www.vlr.gg/": {
+   "status": 200,
+   "final": "https://www.vlr.gg/",
+   "title": "Valorant esports coverage | VLR.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.vlr.gg/stats": {
+   "status": 302,
+   "final": "https://www.vlr.gg/stats",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://liquipedia.net/valorant/Main_Page": {
+   "status": 403,
+   "final": "https://liquipedia.net/valorant/Main_Page",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.rib.gg/": {
+   "status": 200,
+   "final": "https://rib.gg/",
+   "title": "RIB.GG | Valorant Stats, Live Scores, Results & VCT Stats",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.thespike.gg/": {
+   "status": 200,
+   "final": "https://www.thespike.gg/",
+   "title": "VALORANT News | Latest Events & Competitive News | THESPIKE.GG",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://bo3.gg/valorant": {
+   "status": 200,
+   "final": "https://bo3.gg/valorant",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://tracker.gg/valorant": {
+   "status": 403,
+   "final": "https://tracker.gg/valorant",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://blitz.gg/valorant": {
+   "status": 200,
+   "final": "https://blitz.gg/valorant",
+   "title": "VALORANT Tracker - Blitz.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://mobalytics.gg/valorant": {
+   "status": 403,
+   "final": "https://mobalytics.gg/valorant",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.metasrc.com/valorant": {
+   "status": 403,
+   "final": "https://www.metasrc.com/valorant",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://valorant.op.gg/": {
+   "status": 200,
+   "final": "https://op.gg/valorant",
+   "title": "Valorant Tracker, Stats & Match History | OP.GG",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://dak.gg/valorant": {
+   "status": 200,
+   "final": "https://dak.gg/valorant",
+   "title": "발로란트 전적검색 - 닥지지",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/ko-kr/news/tags/patch-notes/": {
+   "status": 200,
+   "final": "https://playvalorant.com/ko-kr/news/tags/patch-notes/",
+   "title": "패치 노트",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/en-us/news/tags/patch-notes/": {
+   "status": 200,
+   "final": "https://playvalorant.com/en-us/news/tags/patch-notes/",
+   "title": "Patch Notes",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/ko-kr/news/": {
+   "status": 200,
+   "final": "https://playvalorant.com/ko-kr/news/",
+   "title": "새 소식",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/ko-kr/maps/": {
+   "status": 200,
+   "final": "https://playvalorant.com/ko-kr/maps/",
+   "title": "VALORANT Maps: Explore Icebox, Bind, Haven, Split and Ascent",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/ko-kr/agents/": {
+   "status": 200,
+   "final": "https://playvalorant.com/ko-kr/agents/",
+   "title": "Agents",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://valorantesports.com/": {
+   "status": 200,
+   "final": "https://valorantesports.com/en-US/",
+   "title": "VALORANT Esports",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://valorant.fandom.com/wiki/VALORANT_Wiki": {
+   "status": 403,
+   "final": "https://valorant.fandom.com/wiki/VALORANT_Wiki",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://namu.wiki/w/VALORANT": {
+   "status": 403,
+   "final": "https://namu.wiki/w/VALORANT",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://support-developer.riotgames.com/hc/en-us/articles/22698769097107-VALORANT": {
+   "status": 403,
+   "final": "https://support-developer.riotgames.com/hc/en-us/articles/22698769097107-VALORANT",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://docs.henrikdev.xyz/": {
+   "status": 200,
+   "final": "https://docs.henrikdev.xyz/general/auth",
+   "title": "Authentication & Authorization - HenrikDev API",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://valorant-api.com/": {
+   "status": 200,
+   "final": "https://valorant-api.com/",
+   "title": "Valorant-API",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://lineupsvalorant.com/": {
+   "status": 200,
+   "final": "https://lineupsvalorant.com/",
+   "title": "LineupsValorant - Easy Valorant Lineups",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://tricks.gg/valorant/lineups": {
+   "status": 404,
+   "final": "https://tricks.gg/valorant/lineups",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://blitz.gg/valorant/lineups": {
+   "status": 200,
+   "final": "https://blitz.gg/valorant/lineups/astra/abyss",
+   "title": "VALORANT Lineups for Abyss and Astra - Blitz.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://valoplant.gg/": {
+   "status": 200,
+   "final": "https://valoplant.gg/",
+   "title": "ValoPlant - Valorant Strategies, Lineups, 2D Replays & AI Match Review",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@AverageJonas": {
+   "handle": "@AverageJonas",
+   "channel_id": "UCg7fw-hJTvJBie_2T6l1dGg",
+   "url": "https://www.youtube.com/channel/UCg7fw-hJTvJBie_2T6l1dGg",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-10-30",
+   "latest_title": "When Enemy Falls for your Fake Recon Dart",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@valorantesports": {
+   "handle": "@valorantesports",
+   "channel_id": "UCA1d3HFGFUmkKr2JIUA5Vlw",
+   "url": "https://www.youtube.com/channel/UCA1d3HFGFUmkKr2JIUA5Vlw",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-10-31",
+   "latest_title": "SRG vs. KRU — VALORANT Game Changers Championship Sao Paulo — Lower Finals",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@VCTPacific": {
+   "handle": "@VCTPacific",
+   "channel_id": "UCA8fUfoBLWyUpAZTbXB0uoA",
+   "url": "https://www.youtube.com/channel/UCA8fUfoBLWyUpAZTbXB0uoA",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-10-31",
+   "latest_title": "No better way to celebrate Halloween than with a Hush themed #VCTGameChangers walkout 🩷",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@VALORANT": {
+   "handle": "@VALORANT",
+   "channel_id": "UC8CX0LD98EDXl4UYX1MDCXg",
+   "url": "https://www.youtube.com/channel/UC8CX0LD98EDXl4UYX1MDCXg",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-10-29",
+   "latest_title": "Hush saying the things we really wanna sayArt by kodznugget // Voicelines in-game#dllm",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@VALORANTKR": {
+   "handle": "@VALORANTKR",
+   "channel_id": "UC9M8GGVwPqc9ubNruArCNPg",
+   "url": "https://www.youtube.com/channel/UC9M8GGVwPqc9ubNruArCNPg",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-10-31",
+   "latest_title": "무궁화 꽃이 피었습니다!🌸",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@ThinkingMansValorant": {
+   "handle": "@ThinkingMansValorant",
+   "channel_id": "UCgIriwgZBo34xOp96Xsp4Yw",
+   "url": "https://www.youtube.com/channel/UCgIriwgZBo34xOp96Xsp4Yw",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-10-31",
+   "latest_title": "Time for a KRUPSET? | KRU vs SRG Lower Final GCC",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@Woohoojin": {
+   "handle": "@Woohoojin",
+   "channel_id": "UCqCLRG4_zynXOEPU6N5POkw",
+   "url": "https://www.youtube.com/channel/UCqCLRG4_zynXOEPU6N5POkw",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2025-04-17",
+   "latest_title": "You're Not Eggster... and That's the Problem",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@SkillCappedValorant": {
+   "handle": "@SkillCappedValorant",
+   "channel_id": "UCre4LlH_zPpgeUVvBGCMqcA",
+   "url": "https://www.youtube.com/channel/UCre4LlH_zPpgeUVvBGCMqcA",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-10-23",
+   "latest_title": "Why You SUCK at Sentinel (and How to Fix It)",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@tarik": {
+   "handle": "@tarik",
+   "channel_id": "UCTbtlMEiBfs0zZLQyJzR0Uw",
+   "url": "https://www.youtube.com/channel/UCTbtlMEiBfs0zZLQyJzR0Uw",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-08-31",
+   "latest_title": "The m0E Experience",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@낄뱅": {
+   "handle": "@낄뱅",
+   "channel_id": "UC4i561ocaLM55W9rNfYTeAA",
+   "url": "https://www.youtube.com/channel/UC4i561ocaLM55W9rNfYTeAA",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2025-06-28",
+   "latest_title": "제발 저티어는 이것부터 ... / 모르면 탈출 못합니다【발로란트 강의 레벨업 프로젝트 1편】",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://guildorder.com/games/valorant/guides/vod-review-discipline": {
+   "status": 200,
+   "final": "https://guildorder.com/games/valorant/guides/vod-review-discipline",
+   "title": "Valorant VOD Review: Homework, Cadence, Discipline | Guild Order",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://guildorder.com/games/valorant/guides/comms-and-callouts": {
+   "status": 200,
+   "final": "https://guildorder.com/games/valorant/guides/comms-and-callouts",
+   "title": "Valorant Callouts Guide: Comms Discipline, Mid-Round Talk",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://guildorder.com/games/valorant/guides/scrim-structure-and-culture": {
+   "status": 200,
+   "final": "https://guildorder.com/games/valorant/guides/scrim-structure-and-culture",
+   "title": "Valorant Scrim Guide: Team Practice, VOD Review, VCT Path",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://britishesports.org/the-hub/about-esports/scrim-etiquette-valorant/": {
+   "status": 200,
+   "final": "https://britishesports.org/the-hub/about-esports/scrim-etiquette-valorant/",
+   "title": "Scrim Etiquette - Valorant | British Esports Federation",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://blog.voltaic.gg/getting-started-with-voltaic/": {
+   "status": 200,
+   "final": "https://app.voltaic.gg/blog/getting-started-with-voltaic/",
+   "title": "Getting started with Voltaic | Voltaic App",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://aimlab-stats.com/benchmarks/kdufpss/voltaic-val": {
+   "status": 200,
+   "final": "https://aimlab-stats.com/benchmarks/kdufpss/voltaic-val",
+   "title": "kdufpss's Voltaic Valorant Benchmarks | Aimlabs Stats",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://aimlabs.com/": {
+   "status": 200,
+   "final": "https://aimlabs.com/",
+   "title": "Aimlabs | The #1 aim trainer.",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://kovaaks.com/": {
+   "status": 200,
+   "final": "https://kovaaks.com/kovaaks/main",
+   "title": "KovaaK's Aim Trainer",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://prosettings.net/games/valorant/": {
+   "status": 200,
+   "final": "https://prosettings.net/games/valorant/",
+   "title": "VALORANT Player Settings & Guides - ProSettings.net",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://prosettings.net/blog/valorant-tips-for-each-rank/": {
+   "status": 200,
+   "final": "https://prosettings.net/blog/valorant-tips-for-each-rank/",
+   "title": "Improving in VALORANT - Tips for Each Rank - ProSettings.net",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://insights.gg/games/valorant": {
+   "status": 200,
+   "final": "https://insights.gg/games/valorant",
+   "title": "Valorant Clipping & Recording — Free, No FPS Loss",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://outplayed.tv/": {
+   "status": 200,
+   "final": "https://outplayed.tv/",
+   "title": "Outplayed.tv",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/ko-kr/news/dev/replays-everything-you-need-to-know/": {
+   "status": 200,
+   "final": "https://playvalorant.com/ko-kr/news/dev/replays-everything-you-need-to-know/",
+   "title": "리플레이에 대해 알아야 할 모든 것",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.reddit.com/r/ValorantCompetitive/": {
+   "status": 403,
+   "final": "https://www.reddit.com/r/ValorantCompetitive/",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.reddit.com/r/VALORANT/": {
+   "status": 403,
+   "final": "https://www.reddit.com/r/VALORANT/",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://valorant.inven.co.kr/": {
+   "status": 200,
+   "final": "https://valorant.inven.co.kr/",
+   "title": "발로란트 인벤",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://arca.live/b/valorant": {
+   "status": 403,
+   "final": "https://arca.live/b/valorant",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "yt:@PlatChatValorant": {
+   "handle": "@PlatChatValorant",
+   "channel_id": "UCQxeg_-Vt94mF0fA3bNmQlA",
+   "url": "https://www.youtube.com/channel/UCQxeg_-Vt94mF0fA3bNmQlA",
+   "status": 200,
+   "videos_in_feed": 15,
+   "latest_upload": "2026-10-29",
+   "latest_title": "Are teams going to cheat the new Partner System? #valorant #vct",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-11-06/": {
+   "status": 200,
+   "final": "https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-11-06/",
+   "title": "VALORANT Patch Notes 11.06",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://coloso.co.kr/products/progamer-opgg": {
+   "status": 200,
+   "final": "https://coloso.co.kr/products/progamer-opgg",
+   "title": "레디언트 1페이지 랭커 이장현과 나노코치의 실전 성장 코칭, 티어 정체 탈출법 공개! | Coloso.",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://boostroom.com/blog/training-plan-for-every-rank-iron-to-immortal-improvement-roadmap": {
+   "status": 200,
+   "final": "https://boostroom.com/blog/training-plan-for-every-rank-iron-to-immortal-improvement-roadmap",
+   "title": "VALORANT Training Plan: Iron to Immortal Roadmap | BoostRoom",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.youtube.com/@ThinkingMansValorant": {
+   "status": 200,
+   "final": "https://www.youtube.com/@ThinkingMansValorant",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://tricks.gg/lineups/grid": {
+   "status": 200,
+   "final": "https://tricks.gg/lineups/grid",
+   "title": "Valorant Lineups Collection: 5000+ Pro Lineups & Setups for Every Agent & Map | Tricks.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://gamertweak.com/top-5-valorant-streamers-who-actually-teach-you-to-play-better/": {
+   "status": 410,
+   "final": "https://gamertweak.com/top-5-valorant-streamers-who-actually-teach-you-to-play-better/",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://dignitas.gg/articles/essential-knowledge-for-all-valorant-players-a-guide-made-by-the-community": {
+   "status": 200,
+   "final": "https://dignitas.gg/articles/essential-knowledge-for-all-valorant-players-a-guide-made-by-the-community",
+   "title": "Essential Knowledge For All VALORANT Players - A Guide Made By The Community | Dignitas",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://velo-gg.onrender.com": {
+   "status": 200,
+   "final": "https://velo-gg.onrender.com",
+   "title": "Velo.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.vlr.gg/433567/how-do-i-learn-abt-igling": {
+   "status": 200,
+   "final": "https://www.vlr.gg/433567/how-do-i-learn-abt-igling",
+   "title": "How do I learn abt igling | VLR.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/en-us/news/game-updates/": {
+   "status": 200,
+   "final": "https://playvalorant.com/en-us/news/game-updates/",
+   "title": "Game Updates",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.kaggle.com/datasets/ryanluong1/valorant-champion-tour-2021-2023-data": {
+   "status": 200,
+   "final": "https://www.kaggle.com/datasets/ryanluong1/valorant-champion-tour-2021-2023-data",
+   "title": "브라우저 확인 중 - reCAPTCHA",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://insights.gg/blog/valorant-replay-system-how-to-watch-save-replays": {
+   "status": 200,
+   "final": "https://insights.gg/blog/valorant-replay-system-how-to-watch-save-replays",
+   "title": "Valorant Replay System (2026): How to Watch and Save Replays",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://thisvalorantlife.buzzsprout.com/2258315": {
+   "status": 200,
+   "final": "https://thisvalorantlife.buzzsprout.com/2258315",
+   "title": "This Valorant Life",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://roadmap.gg/blog/valorant-coaching/valorant-vod-review-checklist": {
+   "status": 200,
+   "final": "https://roadmap.gg/blog/valorant-coaching/valorant-vod-review-checklist",
+   "title": "Valorant VOD Review Checklist: Turn Mistakes into Practice | roadmap.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://liquipedia.net/valorant/Patches": {
+   "status": 403,
+   "final": "https://liquipedia.net/valorant/Patches",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://playvalorant.com/en-us/news/dev/replays-everything-you-need-to-know": {
+   "status": 200,
+   "final": "https://playvalorant.com/en-us/news/dev/replays-everything-you-need-to-know/",
+   "title": "Replays: Everything You Need to Know",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://wiki.playvalorant.com/en-us/Range": {
+   "status": 403,
+   "final": "https://wiki.playvalorant.com/en-us/Range",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.vlr.gg/528188/igl-tips": {
+   "status": 200,
+   "final": "https://www.vlr.gg/528188/igl-tips",
+   "title": "IGL tips | VLR.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://vct-reference.com/dataset": {
+   "status": 200,
+   "final": "https://vct-reference.com/dataset",
+   "title": "The VCT Dataset - VCT Reference",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.vlr.gg/event/agents/2766": {
+   "status": 200,
+   "final": "https://www.vlr.gg/event/agents/2766",
+   "title": "Valorant Champions 2026: Agent Pick Rates and Compositions | Valorant Event | VLR.gg",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.sheepesports.com/us/val/articles/valorant-patch-12-10-adds-replay-friend-sharing-and-masters-london-pick-ems/en": {
+   "status": 403,
+   "final": "https://www.sheepesports.com/us/val/articles/valorant-patch-12-10-adds-replay-friend-sharing-and-masters-london-pick-ems/en",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  },
+  "url:https://www.udemy.com/course/most-complete-valorant-course-by-ex-semi-professional-player/": {
+   "status": 403,
+   "final": "https://www.udemy.com/course/most-complete-valorant-course-by-ex-semi-professional-player/",
+   "title": "",
+   "checked": "2026-10-31T19:19:17Z"
+  }
+ }
+}
