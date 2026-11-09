@@ -1,8 +1,9 @@
 """WON 레이더 수집기.
 
-sources.json에 적힌 RSS·Atom 피드를 읽어 발로란트·AI 소식을 하나의 data.json으로 모은다.
-GitHub Actions가 3시간마다 실행하고, 결과는 gh-pages 브랜치로 배포된다.
+sources.json에 적힌 RSS·Atom 피드(와 공식 사이트맵)를 읽어 발로란트·AI 소식을 하나의 data.json으로 모은다.
+GitHub Actions 예약 실행(3시간 간격 — 실제로는 하루 3~4번)이 돌리고, 결과는 gh-pages 브랜치로 배포된다.
 표준 라이브러리만 쓴다. ANTHROPIC_API_KEY가 있으면 하루 한 번 한국어 브리핑을 만든다(선택).
+유튜브 영상은 여기서 모으지 않는다 — tips.py 가 유튜브 공식 API로 따로 모으고 레이더 앱 '꿀팁' 탭에만 보인다.
 """
 
 import argparse
@@ -31,7 +32,6 @@ NS = {
     "content": "http://purl.org/rss/1.0/modules/content/",
     "dc": "http://purl.org/dc/elements/1.1/",
     "rss1": "http://purl.org/rss/1.0/",
-    "yt": "http://www.youtube.com/xml/schemas/2015",
 }
 
 # 제목·요약에 걸리면 붙는 태그. 앱의 필터 칩이 이 이름을 그대로 쓴다.
@@ -113,20 +113,6 @@ def fetch(url, retries=1):
         raise
 
 
-def resolve_youtube(handle, cache):
-    """'@핸들'을 채널 ID(UC…)로 바꾼다. 한 번 찾은 ID는 data.json에 저장해 다시 찾지 않는다."""
-    if handle in cache:
-        return cache[handle]
-    page = fetch("https://www.youtube.com/" + urllib.parse.quote(handle)).decode("utf-8", "replace")
-    m = (re.search(r'<link rel="canonical" href="https://www\.youtube\.com/channel/(UC[\w-]{22})"', page)
-         or re.search(r'"externalId":"(UC[\w-]{22})"', page)
-         or re.search(r'"channelId":"(UC[\w-]{22})"', page))
-    if not m:
-        raise ValueError("채널 ID를 찾지 못함: " + handle)
-    cache[handle] = m.group(1)
-    return cache[handle]
-
-
 def first(el, paths):
     for p in paths:
         found = el.find(p, NS)
@@ -196,11 +182,42 @@ def title_key(title):
     return t[:48]
 
 
-def collect_source(src, fetched_at, yt_cache):
-    if src.get("youtube"):
-        src["url"] = "https://www.youtube.com/feeds/videos.xml?channel_id=" + resolve_youtube(src["youtube"], yt_cache)
+def parse_sitemap(body, pattern, title_tpl):
+    """사이트맵(urlset)에서 주소가 pattern 에 맞는 것만 → 피드 항목 꼴. 제목은 주소의 숫자로 만든다(예: 패치 노트 13.09)."""
+    root = ET.fromstring(body)
+    rx = re.compile(pattern)
+    out = []
+    for u in root.iter():
+        if not u.tag.endswith("url"):
+            continue
+        loc = lastmod = ""
+        for c in u:
+            if c.tag.endswith("loc"):
+                loc = (c.text or "").strip()
+            elif c.tag.endswith("lastmod"):
+                lastmod = (c.text or "").strip()
+        m = rx.search(loc)
+        if not m:
+            continue
+        nums = [g for g in m.groups() if g]
+        if len(nums) == 1 and nums[0].isdigit() and len(nums[0]) >= 3:   # '1309' → '13.09'
+            ver = nums[0][:-2] + "." + nums[0][-2:]
+        else:
+            ver = ".".join(nums)
+        title = title_tpl.replace("{v}", ver)
+        out.append({"title": title, "link": loc, "date": lastmod, "summary": "", "img": "", "publisher": ""})
+    out.sort(key=lambda e: e["date"], reverse=True)
+    return out
+
+
+def collect_source(src, fetched_at):
+    if src.get("youtube") or "youtube.com/" in src.get("url", ""):
+        raise ValueError("유튜브는 tips.py(공식 API)에서만 모아요")
     body = fetch(src["url"])
-    entries = parse_feed(body)
+    if src.get("sitemap"):
+        entries = parse_sitemap(body, src["sitemap"]["pattern"], src["sitemap"]["title"])
+    else:
+        entries = parse_feed(body)
     include = re.compile(src["include"]) if src.get("include") else None
     exclude = re.compile(src["exclude"]) if src.get("exclude") else None
     naive_tz = KST if src.get("tz") == "KST" else dt.timezone.utc
@@ -246,8 +263,10 @@ def collect_source(src, fetched_at, yt_cache):
     return out
 
 
-def merge(fresh, previous, keep_days, max_items, source_ids, fetched_at):
-    cutoff = fetched_at - dt.timedelta(days=keep_days)
+def merge(fresh, previous, keep_days, max_items, source_ids, fetched_at, keep_by_source=None, max_by_cat=None):
+    """keep_by_source: 소스마다 보관 일수(예: 공식 패치 노트 45일) · max_by_cat: 종류마다 최대 개수
+    (AI 소식이 많아 발로란트 소식이 밀려나지 않게 — 합이 max_items 를 넘지 않음)."""
+    keep_by_source = keep_by_source or {}
     by_id = {}
     for it in previous:
         if it.get("sid") in source_ids:
@@ -257,7 +276,12 @@ def merge(fresh, previous, keep_days, max_items, source_ids, fetched_at):
         if old:
             it["f"] = old.get("f", it["f"])  # 처음 본 시각은 유지 → 앱의 '새 글' 판단
         by_id[it["id"]] = it
-    items = [it for it in by_id.values() if (parse_date(it["p"]) or fetched_at) >= cutoff]
+
+    def kept(it):
+        days = keep_by_source.get(it.get("sid"), keep_days)
+        return (parse_date(it["p"]) or fetched_at) >= fetched_at - dt.timedelta(days=days)
+
+    items = [it for it in by_id.values() if kept(it)]
     items.sort(key=lambda it: it["p"], reverse=True)
     seen, deduped = set(), []
     for it in items:
@@ -266,6 +290,15 @@ def merge(fresh, previous, keep_days, max_items, source_ids, fetched_at):
             continue
         seen.add(key)
         deduped.append(it)
+    if max_by_cat:
+        count, capped = {}, []
+        for it in deduped:
+            n = count.get(it["c"], 0)
+            if n >= max_by_cat.get(it["c"], max_items):
+                continue
+            count[it["c"]] = n + 1
+            capped.append(it)
+        deduped = capped
     return deduped[:max_items]
 
 
@@ -361,7 +394,6 @@ def main():
 
     fetched_at = now_utc()
     sources = config["sources"]
-    yt_cache = dict(previous.get("yt_ids") or {})
 
     def run_host(group):
         # 같은 사이트는 한 줄로 천천히: 레딧처럼 동시 요청을 막는 곳 대비
@@ -370,14 +402,14 @@ def main():
             if i:
                 time.sleep(2)
             try:
-                results.append((s, collect_source(s, fetched_at, yt_cache), None))
+                results.append((s, collect_source(s, fetched_at), None))
             except Exception as e:  # 한 소스가 죽어도 나머지는 계속
                 results.append((s, [], f"{type(e).__name__}: {e}"[:160]))
         return results
 
     by_host = {}
     for s in sources:
-        host = "www.youtube.com" if s.get("youtube") else urllib.parse.urlsplit(s["url"]).netloc
+        host = urllib.parse.urlsplit(s["url"]).netloc
         by_host.setdefault(host, []).append(s)
     fresh, status = [], []
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
@@ -393,16 +425,16 @@ def main():
     status.sort(key=lambda x: order[x["id"]])
 
     items = merge(fresh, previous.get("items", []), config.get("keep_days", 14), config.get("max_items", 900),
-                  set(order), fetched_at)
+                  set(order), fetched_at, {s["id"]: s["keep_days"] for s in sources if s.get("keep_days")},
+                  config.get("max_items_by_cat"))
     for it in items:
         it["pick"] = bool(set(it["tags"]) & PICK_TAGS.get(it["c"], set()))
 
     data = {
         "generated_at": iso(fetched_at),
-        "next_hours": 3,
+        "next_hours": 8,   # 예약은 3시간 간격이지만 GitHub 가 하루 3~4번만 돌려서 — 앱의 '늦음' 기준
         "sources": status,
         "briefing": make_briefing(items, previous.get("briefing"), fetched_at),
-        "yt_ids": yt_cache,
         "items": items,
     }
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)

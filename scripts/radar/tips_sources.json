@@ -1,0 +1,794 @@
+{
+ "v": 1,
+ "_설명": "WON 레이더 꿀팁 수집 설정. channels = 새 영상을 볼 채널(종류·언어는 코치가 정함), queries = 돌려 가며 검색할 말(위에 있을수록 먼저 · 매뉴얼북 빈 곳 순서). to = 매뉴얼북 넣을 칸 '제안'(검색어에서 나옴 · 영상 내용을 보고 정한 게 아님). 뺄 채널·소속 낱말은 여기 적지 않고 GitHub Secret RADAR_SKIP_CHANNELS · RADAR_BLOCK_WORDS 로.",
+ "limits": {
+  "search_per_day": 10,
+  "search_per_run": 3,
+  "units_per_day": 3000,
+  "videos_calls_per_run": 12,
+  "channel_new_per_run": 8,
+  "channel_first": 15,
+  "search_results": 15,
+  "search_days": 730,
+  "refresh_days": 7,
+  "expire_days": 29,
+  "max_items": 1500
+ },
+ "week": {
+  "size": 15,
+  "search_max": 12,
+  "per_query": 2,
+  "per_channel": 2,
+  "channel_days": 14,
+  "long_sec": 180
+ },
+ "old": {
+  "days": 365,
+  "map_changes": {
+   "corrode": "2026-10-14",
+   "breeze": "2026-01-06"
+  }
+ },
+ "exclude_title": "하이라이트|매드무비|모먼트|웃긴|레전드 장면|스킨|번들|야시장|이벤트 당첨|버그|글리치|\\b(highlights?|montage|moments|funny|skins?|bundles?|night ?market|giveaway|bugs?|glitch(es)?|exploits?|cheats?|hacks?)\\b",
+ "names": {
+  "maps": {
+   "abyss": "어비스",
+   "bind": "바인드",
+   "corrode": "코로드",
+   "haven": "헤이븐",
+   "lotus": "로터스",
+   "summit": "서밋",
+   "sunset": "선셋",
+   "ascent": "어센트",
+   "split": "스플릿",
+   "breeze": "브리즈",
+   "fracture": "프랙처",
+   "pearl": "펄",
+   "icebox": "아이스박스"
+  },
+  "agents": {
+   "neon": "네온",
+   "jett": "제트",
+   "sova": "소바",
+   "cypher": "사이퍼",
+   "chamber": "체임버",
+   "fade": "페이드",
+   "omen": "오멘",
+   "reyna": "레이나",
+   "raze": "레이즈",
+   "iso": "아이소",
+   "yoru": "요루",
+   "waylay": "웨이레이",
+   "phoenix": "피닉스",
+   "hush": "허시",
+   "gekko": "게코",
+   "breach": "브리치",
+   "skye": "스카이",
+   "kayo": "케이/오",
+   "tejo": "테호",
+   "deadlock": "데드록",
+   "vyse": "바이스",
+   "veto": "비토",
+   "sage": "세이지",
+   "killjoy": "킬조이",
+   "miks": "믹스",
+   "viper": "바이퍼",
+   "brimstone": "브림스톤",
+   "astra": "아스트라",
+   "clove": "클로브",
+   "harbor": "하버"
+  }
+ },
+ "channels": [
+  {
+   "handle": "@Valdukk",
+   "name": "발덬",
+   "kind": "꿀팁·강의",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@단박",
+   "name": "단박DANBAK",
+   "kind": "꿀팁·강의",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@Woojinvlrt",
+   "name": "이우진",
+   "kind": "꿀팁·강의",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@왕십리코난",
+   "name": "왕십리코난",
+   "kind": "꿀팁·강의",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@ValorantPickUp",
+   "name": "발픽업",
+   "kind": "꿀팁·강의",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@Akame-hl3zo",
+   "name": "아카메",
+   "kind": "꿀팁·강의",
+   "lang": "ko",
+   "weekly": false
+  },
+  {
+   "handle": "@와삽이",
+   "name": "와삽이",
+   "kind": "셋업·스킬",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@고독한생존가",
+   "name": "고독한 생존가",
+   "kind": "셋업·스킬",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@보우새",
+   "name": "활 쏘는 새 보우새",
+   "kind": "셋업·스킬",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@김가냥발로란트",
+   "name": "김가냥",
+   "kind": "셋업·스킬",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@ValoLine-kr",
+   "name": "ValoLine 발로라인",
+   "kind": "월뱅·잡기술",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@노라스",
+   "name": "노라스",
+   "kind": "월뱅·잡기술",
+   "lang": "ko",
+   "weekly": true
+  },
+  {
+   "handle": "@ValorantEsportsKR",
+   "name": "VCT KR",
+   "kind": "대회·메타",
+   "lang": "ko",
+   "weekly": false
+  },
+  {
+   "handle": "@VALTOUR",
+   "name": "VALTOUR 발투어",
+   "kind": "대회·메타",
+   "lang": "ko",
+   "weekly": false
+  },
+  {
+   "handle": "@제로핑1",
+   "name": "제로핑",
+   "kind": "대회·메타",
+   "lang": "ko",
+   "weekly": false
+  },
+  {
+   "handle": "@VALORANTkr",
+   "name": "발로란트 공식",
+   "kind": "공식",
+   "lang": "ko",
+   "weekly": false
+  },
+  {
+   "handle": "@MrLowlander",
+   "name": "MrLowlander",
+   "kind": "꿀팁·강의",
+   "lang": "en",
+   "weekly": true
+  },
+  {
+   "handle": "@LegendAnthony",
+   "name": "LegendAnthony",
+   "kind": "꿀팁·강의",
+   "lang": "en",
+   "weekly": true
+  },
+  {
+   "handle": "@BerateValorant",
+   "name": "Berate",
+   "kind": "꿀팁·강의",
+   "lang": "en",
+   "weekly": true
+  },
+  {
+   "handle": "@Slayerkey",
+   "name": "Slayerkey",
+   "kind": "꿀팁·강의",
+   "lang": "en",
+   "weekly": true
+  },
+  {
+   "handle": "@itsflamebtw",
+   "name": "ItsFlameBTW",
+   "kind": "셋업·스킬",
+   "lang": "en",
+   "weekly": true
+  },
+  {
+   "handle": "@Amirant",
+   "name": "Amirant",
+   "kind": "셋업·스킬",
+   "lang": "en",
+   "weekly": true
+  },
+  {
+   "handle": "@ThinkingMansValorant",
+   "name": "Thinking Man's Valorant",
+   "kind": "대회·메타",
+   "lang": "en",
+   "weekly": false
+  },
+  {
+   "handle": "@Dopai",
+   "name": "Dopai",
+   "kind": "대회·메타",
+   "lang": "en",
+   "weekly": false
+  },
+  {
+   "handle": "@AnderzzTV",
+   "name": "AnderzzTV",
+   "kind": "대회·메타",
+   "lang": "en",
+   "weekly": false
+  },
+  {
+   "handle": "@KangaValorant",
+   "name": "Kanga",
+   "kind": "대회·메타",
+   "lang": "en",
+   "weekly": false
+  }
+ ],
+ "queries": [
+  {
+   "id": "bind-off-ko",
+   "q": "발로란트 바인드 오프앵글",
+   "lang": "ko",
+   "label": "바인드 · 오프앵글",
+   "to": "mg:bind:offrefs",
+   "map": "bind"
+  },
+  {
+   "id": "corrode-off-ko",
+   "q": "발로란트 코로드 오프앵글",
+   "lang": "ko",
+   "label": "코로드 · 오프앵글",
+   "to": "mg:corrode:offrefs",
+   "map": "corrode"
+  },
+  {
+   "id": "bind-off-en",
+   "q": "valorant Bind off angles",
+   "lang": "en",
+   "label": "바인드 · 오프앵글 (영어)",
+   "to": "mg:bind:offrefs",
+   "map": "bind"
+  },
+  {
+   "id": "corrode-off-en",
+   "q": "valorant Corrode off angles",
+   "lang": "en",
+   "label": "코로드 · 오프앵글 (영어)",
+   "to": "mg:corrode:offrefs",
+   "map": "corrode"
+  },
+  {
+   "id": "corrode-wall-ko",
+   "q": "발로란트 코로드 월샷",
+   "lang": "ko",
+   "label": "코로드 · 월뱅",
+   "to": "mg:corrode:wallrefs",
+   "map": "corrode"
+  },
+  {
+   "id": "bind-wall-ko",
+   "q": "발로란트 바인드 월샷",
+   "lang": "ko",
+   "label": "바인드 · 월뱅",
+   "to": "mg:bind:wallrefs",
+   "map": "bind"
+  },
+  {
+   "id": "pearl-off-ko",
+   "q": "발로란트 펄 오프앵글",
+   "lang": "ko",
+   "label": "펄 · 오프앵글",
+   "to": "mg:pearl:offrefs",
+   "map": "pearl"
+  },
+  {
+   "id": "breeze-off-ko",
+   "q": "발로란트 브리즈 오프앵글",
+   "lang": "ko",
+   "label": "브리즈 · 오프앵글",
+   "to": "mg:breeze:offrefs",
+   "map": "breeze"
+  },
+  {
+   "id": "lotus-off-ko",
+   "q": "발로란트 로터스 오프앵글",
+   "lang": "ko",
+   "label": "로터스 · 오프앵글",
+   "to": "mg:lotus:offrefs",
+   "map": "lotus"
+  },
+  {
+   "id": "fade-haven-spot-en",
+   "q": "valorant Fade Haven spots",
+   "lang": "en",
+   "label": "페이드 · 헤이븐 · 라인전 자리 (영어)",
+   "to": "lane:fade:haven",
+   "map": "haven"
+  },
+  {
+   "id": "fade-bind-spot-en",
+   "q": "valorant Fade Bind spots",
+   "lang": "en",
+   "label": "페이드 · 바인드 · 라인전 자리 (영어)",
+   "to": "lane:fade:bind",
+   "map": "bind"
+  },
+  {
+   "id": "fade-abyss-spot-en",
+   "q": "valorant Fade Abyss spots",
+   "lang": "en",
+   "label": "페이드 · 어비스 · 라인전 자리 (영어)",
+   "to": "lane:fade:abyss",
+   "map": "abyss"
+  },
+  {
+   "id": "abyss-off-ko",
+   "q": "발로란트 어비스 오프앵글",
+   "lang": "ko",
+   "label": "어비스 · 오프앵글",
+   "to": "mg:abyss:offrefs",
+   "map": "abyss"
+  },
+  {
+   "id": "abyss-wall-ko",
+   "q": "발로란트 어비스 월샷",
+   "lang": "ko",
+   "label": "어비스 · 월뱅",
+   "to": "mg:abyss:wallrefs",
+   "map": "abyss"
+  },
+  {
+   "id": "abyss-tip-ko",
+   "q": "발로란트 어비스 꿀팁",
+   "lang": "ko",
+   "label": "어비스 · 꿀팁",
+   "to": "mg:abyss:tiprefs",
+   "map": "abyss"
+  },
+  {
+   "id": "haven-off-ko",
+   "q": "발로란트 헤이븐 오프앵글",
+   "lang": "ko",
+   "label": "헤이븐 · 오프앵글",
+   "to": "mg:haven:offrefs",
+   "map": "haven"
+  },
+  {
+   "id": "haven-wall-ko",
+   "q": "발로란트 헤이븐 월샷",
+   "lang": "ko",
+   "label": "헤이븐 · 월뱅",
+   "to": "mg:haven:wallrefs",
+   "map": "haven"
+  },
+  {
+   "id": "haven-tip-ko",
+   "q": "발로란트 헤이븐 꿀팁",
+   "lang": "ko",
+   "label": "헤이븐 · 꿀팁",
+   "to": "mg:haven:tiprefs",
+   "map": "haven"
+  },
+  {
+   "id": "lotus-wall-ko",
+   "q": "발로란트 로터스 월샷",
+   "lang": "ko",
+   "label": "로터스 · 월뱅",
+   "to": "mg:lotus:wallrefs",
+   "map": "lotus"
+  },
+  {
+   "id": "lotus-tip-ko",
+   "q": "발로란트 로터스 꿀팁",
+   "lang": "ko",
+   "label": "로터스 · 꿀팁",
+   "to": "mg:lotus:tiprefs",
+   "map": "lotus"
+  },
+  {
+   "id": "summit-off-ko",
+   "q": "발로란트 서밋 오프앵글",
+   "lang": "ko",
+   "label": "서밋 · 오프앵글",
+   "to": "mg:summit:offrefs",
+   "map": "summit"
+  },
+  {
+   "id": "summit-wall-ko",
+   "q": "발로란트 서밋 월샷",
+   "lang": "ko",
+   "label": "서밋 · 월뱅",
+   "to": "mg:summit:wallrefs",
+   "map": "summit"
+  },
+  {
+   "id": "summit-tip-ko",
+   "q": "발로란트 서밋 꿀팁",
+   "lang": "ko",
+   "label": "서밋 · 꿀팁",
+   "to": "mg:summit:tiprefs",
+   "map": "summit"
+  },
+  {
+   "id": "sunset-off-ko",
+   "q": "발로란트 선셋 오프앵글",
+   "lang": "ko",
+   "label": "선셋 · 오프앵글",
+   "to": "mg:sunset:offrefs",
+   "map": "sunset"
+  },
+  {
+   "id": "sunset-wall-ko",
+   "q": "발로란트 선셋 월샷",
+   "lang": "ko",
+   "label": "선셋 · 월뱅",
+   "to": "mg:sunset:wallrefs",
+   "map": "sunset"
+  },
+  {
+   "id": "sunset-tip-ko",
+   "q": "발로란트 선셋 꿀팁",
+   "lang": "ko",
+   "label": "선셋 · 꿀팁",
+   "to": "mg:sunset:tiprefs",
+   "map": "sunset"
+  },
+  {
+   "id": "abyss-off-en",
+   "q": "valorant Abyss off angles",
+   "lang": "en",
+   "label": "어비스 · 오프앵글 (영어)",
+   "to": "mg:abyss:offrefs",
+   "map": "abyss"
+  },
+  {
+   "id": "abyss-wall-en",
+   "q": "valorant Abyss wallbangs",
+   "lang": "en",
+   "label": "어비스 · 월뱅 (영어)",
+   "to": "mg:abyss:wallrefs",
+   "map": "abyss"
+  },
+  {
+   "id": "bind-wall-en",
+   "q": "valorant Bind wallbangs",
+   "lang": "en",
+   "label": "바인드 · 월뱅 (영어)",
+   "to": "mg:bind:wallrefs",
+   "map": "bind"
+  },
+  {
+   "id": "corrode-wall-en",
+   "q": "valorant Corrode wallbangs",
+   "lang": "en",
+   "label": "코로드 · 월뱅 (영어)",
+   "to": "mg:corrode:wallrefs",
+   "map": "corrode"
+  },
+  {
+   "id": "haven-off-en",
+   "q": "valorant Haven off angles",
+   "lang": "en",
+   "label": "헤이븐 · 오프앵글 (영어)",
+   "to": "mg:haven:offrefs",
+   "map": "haven"
+  },
+  {
+   "id": "haven-wall-en",
+   "q": "valorant Haven wallbangs",
+   "lang": "en",
+   "label": "헤이븐 · 월뱅 (영어)",
+   "to": "mg:haven:wallrefs",
+   "map": "haven"
+  },
+  {
+   "id": "lotus-off-en",
+   "q": "valorant Lotus off angles",
+   "lang": "en",
+   "label": "로터스 · 오프앵글 (영어)",
+   "to": "mg:lotus:offrefs",
+   "map": "lotus"
+  },
+  {
+   "id": "lotus-wall-en",
+   "q": "valorant Lotus wallbangs",
+   "lang": "en",
+   "label": "로터스 · 월뱅 (영어)",
+   "to": "mg:lotus:wallrefs",
+   "map": "lotus"
+  },
+  {
+   "id": "summit-off-en",
+   "q": "valorant Summit off angles",
+   "lang": "en",
+   "label": "서밋 · 오프앵글 (영어)",
+   "to": "mg:summit:offrefs",
+   "map": "summit"
+  },
+  {
+   "id": "summit-wall-en",
+   "q": "valorant Summit wallbangs",
+   "lang": "en",
+   "label": "서밋 · 월뱅 (영어)",
+   "to": "mg:summit:wallrefs",
+   "map": "summit"
+  },
+  {
+   "id": "sunset-off-en",
+   "q": "valorant Sunset off angles",
+   "lang": "en",
+   "label": "선셋 · 오프앵글 (영어)",
+   "to": "mg:sunset:offrefs",
+   "map": "sunset"
+  },
+  {
+   "id": "sunset-wall-en",
+   "q": "valorant Sunset wallbangs",
+   "lang": "en",
+   "label": "선셋 · 월뱅 (영어)",
+   "to": "mg:sunset:wallrefs",
+   "map": "sunset"
+  },
+  {
+   "id": "bind-tip-ko",
+   "q": "발로란트 바인드 꿀팁",
+   "lang": "ko",
+   "label": "바인드 · 꿀팁",
+   "to": "mg:bind:tiprefs",
+   "map": "bind"
+  },
+  {
+   "id": "corrode-tip-ko",
+   "q": "발로란트 코로드 꿀팁",
+   "lang": "ko",
+   "label": "코로드 · 꿀팁",
+   "to": "mg:corrode:tiprefs",
+   "map": "corrode"
+  },
+  {
+   "id": "fade-tip-ko",
+   "q": "발로란트 페이드 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "페이드 · 꿀팁·스킬 활용",
+   "to": "agent:fade"
+  },
+  {
+   "id": "iso-tip-ko",
+   "q": "발로란트 아이소 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "아이소 · 꿀팁·스킬 활용",
+   "to": "agent:iso"
+  },
+  {
+   "id": "hush-tip-ko",
+   "q": "발로란트 허시 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "허시 · 꿀팁·스킬 활용",
+   "to": "agent:hush"
+  },
+  {
+   "id": "gekko-tip-ko",
+   "q": "발로란트 게코 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "게코 · 꿀팁·스킬 활용",
+   "to": "agent:gekko"
+  },
+  {
+   "id": "kayo-tip-ko",
+   "q": "발로란트 케이/오 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "케이/오 · 꿀팁·스킬 활용",
+   "to": "agent:kayo"
+  },
+  {
+   "id": "tejo-tip-ko",
+   "q": "발로란트 테호 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "테호 · 꿀팁·스킬 활용",
+   "to": "agent:tejo"
+  },
+  {
+   "id": "vyse-tip-ko",
+   "q": "발로란트 바이스 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "바이스 · 꿀팁·스킬 활용",
+   "to": "agent:vyse"
+  },
+  {
+   "id": "brimstone-tip-ko",
+   "q": "발로란트 브림스톤 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "브림스톤 · 꿀팁·스킬 활용",
+   "to": "agent:brimstone"
+  },
+  {
+   "id": "neon-tip-ko",
+   "q": "발로란트 네온 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "네온 · 꿀팁·스킬 활용",
+   "to": "agent:neon"
+  },
+  {
+   "id": "jett-tip-ko",
+   "q": "발로란트 제트 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "제트 · 꿀팁·스킬 활용",
+   "to": "agent:jett"
+  },
+  {
+   "id": "sova-tip-ko",
+   "q": "발로란트 소바 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "소바 · 꿀팁·스킬 활용",
+   "to": "agent:sova"
+  },
+  {
+   "id": "cypher-tip-ko",
+   "q": "발로란트 사이퍼 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "사이퍼 · 꿀팁·스킬 활용",
+   "to": "agent:cypher"
+  },
+  {
+   "id": "chamber-tip-ko",
+   "q": "발로란트 체임버 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "체임버 · 꿀팁·스킬 활용",
+   "to": "agent:chamber"
+  },
+  {
+   "id": "omen-tip-ko",
+   "q": "발로란트 오멘 꿀팁 스킬 활용",
+   "lang": "ko",
+   "label": "오멘 · 꿀팁·스킬 활용",
+   "to": "agent:omen"
+  },
+  {
+   "id": "fade-tip-en",
+   "q": "valorant Fade tips how to use abilities",
+   "lang": "en",
+   "label": "페이드 · 꿀팁·스킬 활용 (영어)",
+   "to": "agent:fade"
+  },
+  {
+   "id": "hush-tip-en",
+   "q": "valorant Hush tips how to use abilities",
+   "lang": "en",
+   "label": "허시 · 꿀팁·스킬 활용 (영어)",
+   "to": "agent:hush"
+  },
+  {
+   "id": "vyse-tip-en",
+   "q": "valorant Vyse tips how to use abilities",
+   "lang": "en",
+   "label": "바이스 · 꿀팁·스킬 활용 (영어)",
+   "to": "agent:vyse"
+  },
+  {
+   "id": "tejo-tip-en",
+   "q": "valorant Tejo tips how to use abilities",
+   "lang": "en",
+   "label": "테호 · 꿀팁·스킬 활용 (영어)",
+   "to": "agent:tejo"
+  },
+  {
+   "id": "ascent-off-ko",
+   "q": "발로란트 어센트 오프앵글",
+   "lang": "ko",
+   "label": "어센트 · 오프앵글",
+   "to": "mg:ascent:offrefs",
+   "map": "ascent"
+  },
+  {
+   "id": "ascent-wall-ko",
+   "q": "발로란트 어센트 월샷",
+   "lang": "ko",
+   "label": "어센트 · 월뱅",
+   "to": "mg:ascent:wallrefs",
+   "map": "ascent"
+  },
+  {
+   "id": "split-off-ko",
+   "q": "발로란트 스플릿 오프앵글",
+   "lang": "ko",
+   "label": "스플릿 · 오프앵글",
+   "to": "mg:split:offrefs",
+   "map": "split"
+  },
+  {
+   "id": "split-wall-ko",
+   "q": "발로란트 스플릿 월샷",
+   "lang": "ko",
+   "label": "스플릿 · 월뱅",
+   "to": "mg:split:wallrefs",
+   "map": "split"
+  },
+  {
+   "id": "breeze-wall-ko",
+   "q": "발로란트 브리즈 월샷",
+   "lang": "ko",
+   "label": "브리즈 · 월뱅",
+   "to": "mg:breeze:wallrefs",
+   "map": "breeze"
+  },
+  {
+   "id": "fracture-off-ko",
+   "q": "발로란트 프랙처 오프앵글",
+   "lang": "ko",
+   "label": "프랙처 · 오프앵글",
+   "to": "mg:fracture:offrefs",
+   "map": "fracture"
+  },
+  {
+   "id": "fracture-wall-ko",
+   "q": "발로란트 프랙처 월샷",
+   "lang": "ko",
+   "label": "프랙처 · 월뱅",
+   "to": "mg:fracture:wallrefs",
+   "map": "fracture"
+  },
+  {
+   "id": "pearl-wall-ko",
+   "q": "발로란트 펄 월샷",
+   "lang": "ko",
+   "label": "펄 · 월뱅",
+   "to": "mg:pearl:wallrefs",
+   "map": "pearl"
+  },
+  {
+   "id": "icebox-off-ko",
+   "q": "발로란트 아이스박스 오프앵글",
+   "lang": "ko",
+   "label": "아이스박스 · 오프앵글",
+   "to": "mg:icebox:offrefs",
+   "map": "icebox"
+  },
+  {
+   "id": "icebox-wall-ko",
+   "q": "발로란트 아이스박스 월샷",
+   "lang": "ko",
+   "label": "아이스박스 · 월뱅",
+   "to": "mg:icebox:wallrefs",
+   "map": "icebox"
+  }
+ ]
+}
