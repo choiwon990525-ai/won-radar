@@ -119,6 +119,23 @@ class TipsTest(unittest.TestCase):
         self.assertEqual(week3["week"], "2026-W47")
         self.assertFalse({e["id"] for e in week3["items"]} & {e["id"] for e in week["items"]})
 
+    def test_channel_shorts_stay_out_of_week(self):
+        """채널 새 영상 중 1분 이하(쇼츠)는 이번 주 후보에 안 넣고 목록에만 둬요. 검색으로 찾은 짧은 영상은 후보 그대로."""
+        cfg = copy.deepcopy(CFG)
+        cfg["channels"].append({"handle": "@shortch", "name": "쇼츠 채널", "kind": "셋업·스킬", "lang": "ko", "weekly": True})
+        f = world()
+        f.channels["@shortch"] = (cid(3), "쇼츠 채널")
+        f.uploads["UU" + cid(3)[2:]] = [vid(40)]
+        f.search_hits["바인드"] = [vid(41)] + f.search_hits["바인드"]
+        recent = iso(NOW - dt.timedelta(days=1))
+        f.videos[vid(40)] = {"t": "라인업 한 장", "cid": cid(3), "p": recent, "dur": 30}
+        f.videos[vid(41)] = {"t": "바인드 오프앵글 쇼츠", "cid": cid(4), "p": recent, "dur": 45}
+        data, week = self.run_once(f, cfg=cfg)
+        picked = {e["id"] for e in week["items"]}
+        self.assertIn(vid(40), {it["id"] for it in data["items"]}, "목록(전체)에는 있어요")
+        self.assertNotIn(vid(40), picked)
+        self.assertIn(vid(41), picked, "검색어로 찾은 짧은 영상은 후보")
+
     def test_push_or_keyless_week_is_provisional(self):
         """push 실행(검색 안 함)에서 고른 목록은 굳히지 않고, 다음 예약 실행에서 검색 결과까지 넣어 다시 골라요."""
         data, week = self.run_once(world(), event="push")

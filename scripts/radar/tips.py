@@ -162,7 +162,9 @@ def make_week(items, cfg, order, now, prev_week, can_seal=True):
     def weekly_channel(it):
         return any(v.startswith("ch:") and order.chd.get(v[3:], {}).get("weekly") for v in it.get("via", []))
 
-    fresh = [it for it in pool if it["id"] not in chosen and weekly_channel(it) and (parse_iso(it.get("p")) or since) > since]
+    min_sec = W.get("channel_min_sec", 61)   # 채널 새 영상은 1분 넘는 것만 (쇼츠는 앱 '전체'에서 봄 — 검색으로 찾은 쇼츠는 그대로 후보)
+    fresh = [it for it in pool if it["id"] not in chosen and weekly_channel(it) and it.get("dur", 0) >= min_sec
+             and (parse_iso(it.get("p")) or since) > since]
     fresh.sort(key=lambda it: (bool(it.get("old")), 0 if it.get("dur", 0) > long_sec else 1,
                                min(order.via_key(v) for v in it.get("via", []) if v.startswith("ch:")), -ts(it)))
     for it in fresh:

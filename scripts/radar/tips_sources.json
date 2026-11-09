@@ -20,7 +20,8 @@
   "per_query": 2,
   "per_channel": 2,
   "channel_days": 14,
-  "long_sec": 180
+  "long_sec": 180,
+  "channel_min_sec": 61
  },
  "old": {
   "days": 365,
