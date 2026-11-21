@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WON 레이더</title>
+<meta name="description" content="발로란트·AI 소식, 꿀팁 영상, 전략·라인업·메타 레퍼런스를 하루 3~4번 모아 보여 주는 코치용 앱">
+<meta name="theme-color" content="#0A0C11">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="WON 레이더">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  /* 레이아웃: 한 줄 피드(폰 우선) — 위에 브리핑, 아래로 날짜별 카드. 발로란트=공격 빨강, AI=수비 청록.
+     토큰은 기존 '내전 관리' 앱과 같은 팔레트에서 가져옴. */
+  :root{
+    --bg:#0A0C11; --surface:#12151D; --surface2:#171B26; --line:#232838;
+    --text:#EDEFF5; --muted:#8A90A6; --dim:#565D75;
+    --val:#FF4655; --val-soft:#2A1218; --ai:#2FD4C6; --ai-soft:#0F2826;
+    --gold:#F2C94C; --mint:#33E6B4; --warn:#F2994A;
+    --glow1:#1d1219; --glow2:#0c1a21;
+    --display:'Rajdhani','Noto Sans KR',system-ui,sans-serif;
+    --body:'Noto Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color-scheme:dark;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#F4F5F8; --surface:#FFFFFF; --surface2:#EEF0F5; --line:#DCE0EA;
+      --text:#14161D; --muted:#596079; --dim:#8A90A6;
+      --val:#D92B3B; --val-soft:#FDE8EA; --ai:#0E8F86; --ai-soft:#DDF5F2;
+      --gold:#A87A00; --mint:#0F9E74; --warn:#B4610F;
+      --glow1:#FBE9EC; --glow2:#E3F4F3;
+      color-scheme:light;
+    }
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}   /* display 를 정한 칸(.dialog 등)도 hidden 이면 숨김 */
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.55;
+    background-image:radial-gradient(900px 480px at 85% -10%,var(--glow1) 0%,transparent 60%),radial-gradient(760px 420px at -10% 110%,var(--glow2) 0%,transparent 55%);
+    background-attachment:fixed}
+  a{color:inherit}
+  button,input,select{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--ai);outline-offset:2px;border-radius:6px}
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px 72px}
+
+  header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+  .bar{max-width:760px;margin:0 auto;padding:12px 16px 10px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .eyebrow{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
+  .eyebrow b{color:var(--val);font-weight:700} .eyebrow i{font-style:normal;color:var(--ai)}
+  h1{margin:2px 0 0;font-family:var(--display);font-weight:700;font-size:28px;letter-spacing:.02em;line-height:1;text-wrap:balance}
+  h1 span{font-family:var(--body);font-weight:900;font-size:24px}
+  .status{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);
+    border-radius:999px;padding:5px 11px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .chip .dot{width:6px;height:6px;border-radius:50%;background:var(--mint)}
+  .chip .dot.warn{background:var(--warn)} .chip .dot.err{background:var(--val)}
+  .timer{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.04em;color:var(--text)}
+  button.icon{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;color:var(--muted);cursor:pointer}
+  button.icon:hover{color:var(--text)}
+
+  nav.tabs{max-width:760px;margin:0 auto;padding:0 16px 10px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  nav.tabs::-webkit-scrollbar{display:none}
+  nav.tabs button{flex:1 0 auto;min-width:64px;padding:9px 12px;border:1px solid var(--line);background:var(--surface);border-radius:10px;cursor:pointer;
+    font-family:var(--body);font-weight:700;font-size:14px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
+  nav.tabs button[aria-selected="true"]{background:var(--text);border-color:var(--text);color:var(--bg)}
+  nav.tabs .n{font-family:var(--display);font-size:12px;font-weight:700;min-width:18px;padding:0 5px;border-radius:9px;background:var(--val);color:#fff;line-height:18px}
+  nav.tabs button[data-tab="ai"] .n{background:var(--ai);color:#04221f}
+  /* 폰: 탭 6개가 한 줄에 들어가게 (꿀팁 탭이 생겨서) */
+  @media (max-width:480px){
+    nav.tabs{gap:3px}
+    nav.tabs button{min-width:0;padding:8px 5px;font-size:13.5px;gap:3px}
+    nav.tabs .n{font-size:11px;min-width:16px;padding:0 4px;line-height:16px}
+  }
+
+  section.brief{margin:16px 0 4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .brief h2{margin:0 0 10px;font-size:13px;font-weight:700;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .brief h2 em{font-style:normal;font-family:var(--display);letter-spacing:.06em}
+  .brief .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .brief .col{min-width:0}
+  .brief .lab{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.2em}
+  .brief .lab.val{color:var(--val)} .brief .lab.ai{color:var(--ai)}
+  .brief ul{margin:6px 0 0;padding-left:18px;font-size:14px} .brief li{margin:3px 0}
+  .brief .idea{margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--line);font-size:14px}
+  .brief .idea b{color:var(--gold)}
+  @media (max-width:560px){.brief .cols{grid-template-columns:1fr}}
+
+  .controls{display:flex;flex-direction:column;gap:10px;margin:16px 0 6px}
+  .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+  .chips button{flex:0 0 auto;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+  .chips button[aria-pressed="true"]{border-color:var(--text);color:var(--text);background:var(--surface2)}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .search{flex:1 1 220px;min-width:0;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 12px}
+  .search input{flex:1;min-width:0;border:0;background:transparent;padding:10px 0;outline:none}
+  .search svg{flex:0 0 auto;color:var(--dim)}
+  select{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-width:0;max-width:100%}
+
+  .day{margin:22px 0 8px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em;display:flex;align-items:center;gap:10px}
+  .day::after{content:"";flex:1;height:1px;background:var(--line)}
+  .list{display:flex;flex-direction:column;gap:8px}
+  article.item{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  article.item .main{flex:1;min-width:0}
+  article.item.read{opacity:.62}
+  .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+  .side{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.14em;padding:1px 6px;border-radius:4px}
+  .side.valorant{color:var(--val);background:var(--val-soft)} .side.ai{color:var(--ai);background:var(--ai-soft)}
+  .src{font-weight:500;color:var(--text);opacity:.85;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .new{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.12em;color:var(--gold)}
+  a.title{display:block;margin:4px 0 2px;font-weight:700;font-size:15.5px;line-height:1.4;text-decoration:none;overflow-wrap:anywhere}
+  a.title:hover{text-decoration:underline;text-underline-offset:3px}
+  p.desc{margin:2px 0 0;font-size:13.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+  .foot{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .tag{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 7px}
+  .tag.hot{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 45%,var(--line))}
+  button.save{margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:8px;padding:3px 10px;font-size:12px;color:var(--muted);cursor:pointer}
+  button.save[aria-pressed="true"]{color:var(--gold);border-color:var(--gold)}
+  .thumb{flex:0 0 auto;width:88px;height:66px;border-radius:8px;object-fit:cover;background:var(--surface2)}
+  .thumb-link{flex:0 0 auto;align-self:flex-start;line-height:0}
+  .thumb.wide{width:112px;height:63px}   /* 유튜브 썸네일 16:9 그대로 (자르지 않음) */
+  .thumb-link.inline{display:none;margin:8px 0 2px}
+  .thumb-link.inline .thumb.wide{width:160px;height:90px}
+  @media (max-width:420px){.thumb{width:72px;height:54px}}
+  /* 폰: 꿀팁 카드 썸네일은 제목 밑으로 (번호 · 제목 칸을 넓게) */
+  @media (max-width:480px){article.tip .thumb-link.side{display:none} article.tip .thumb-link.inline{display:block}}
+
+  .empty{margin:28px 0;padding:22px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center;font-size:14px}
+  .more{display:block;margin:14px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 18px;cursor:pointer;color:var(--muted)}
+
+  /* 레퍼런스 */
+  .ref-head{margin:18px 0 0;font-size:13.5px;color:var(--muted)}
+  .ref-head a{color:var(--ai)}
+  .ref{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .ref .name{font-weight:700;font-size:15px;text-decoration:none;overflow-wrap:anywhere}
+  .ref .name:hover{text-decoration:underline;text-underline-offset:3px}
+  .ref .use{margin:3px 0 0;font-size:13.5px;color:var(--muted)}
+  .ref .memo{margin:3px 0 0;font-size:12.5px;color:var(--dim)}
+  .badge{font-size:11.5px;border-radius:6px;padding:1px 7px;border:1px solid var(--line);color:var(--muted)}
+  .badge.go{color:var(--mint);border-color:color-mix(in srgb,var(--mint) 45%,var(--line))}
+  .badge.cat{color:var(--text)}
+  .badge.warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,var(--line))}
+
+  /* 꿀팁 */
+  .tip-head{margin:18px 0 0;font-size:13.5px;color:var(--muted)}
+  .tip-note{margin:8px 0 0;padding:10px 12px;border:1px solid color-mix(in srgb,var(--warn) 45%,var(--line));border-radius:10px;font-size:13.5px;color:var(--warn)}
+  section.week{margin:14px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .week h2{margin:0;font-size:15px;font-weight:700;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+  .week h2 em{font-style:normal;font-family:var(--display);font-size:13px;letter-spacing:.06em;color:var(--muted)}
+  .week p{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+  .week p b{color:var(--text)}
+  .week .copy{margin-top:10px;background:transparent;border:1px solid var(--line);border-radius:8px;padding:5px 12px;font-size:12.5px;color:var(--muted);cursor:pointer}
+  .week textarea{width:100%;margin-top:8px;background:var(--surface2);border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px;font:inherit;font-size:13px}
+  .num{flex:0 0 auto;align-self:flex-start;min-width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);font-weight:700;font-size:16px;background:var(--val-soft);color:var(--val)}
+  .yt{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.08em;padding:1px 6px;border-radius:4px;color:var(--text);background:var(--surface2);border:1px solid var(--line)}
+  .badge.code{font-family:var(--display);letter-spacing:.06em;color:var(--text)}
+  .badge.to{color:var(--ai);border-color:color-mix(in srgb,var(--ai) 45%,var(--line))}
+  article.gone{opacity:.62}
+  .dialog{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:color-mix(in srgb,var(--bg) 70%,transparent);
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+  .dialog .box{max-width:440px;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .dialog h2{margin:0 0 8px;font-size:18px}
+  .dialog p{margin:6px 0;font-size:14px;color:var(--muted)}
+  .dialog .links{display:flex;flex-wrap:wrap;gap:6px 12px;margin:10px 0 14px;font-size:13px}
+  .dialog .links a{color:var(--ai)}
+  .dialog button{width:100%;background:var(--val);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}
+  .dialog button.later{margin-top:8px;background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:500}
+  .legal a{color:var(--ai)}
+
+  footer.foot-info{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:10px}
+  details summary{cursor:pointer;color:var(--text)}
+  .srcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 14px;margin-top:8px;font-size:12.5px}
+  .srcs div{display:flex;gap:6px;align-items:center;min-width:0}
+  .srcs span.nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .srcs .cnt{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--dim)}
+  button.install{align-self:flex-start;background:var(--val);color:#fff;border:0;border-radius:10px;padding:9px 16px;font-weight:700;cursor:pointer}
+  @media (prefers-reduced-motion:no-preference){article.item,.ref{transition:border-color .15s} article.item:hover,.ref:hover{border-color:var(--dim)}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <div>
+      <div class="eyebrow"><b>VALORANT</b> × <i>AI</i> · RADAR</div>
+      <h1>WON <span>레이더</span></h1>
+    </div>
+    <div class="status">
+      <span class="chip" id="updated"><span class="dot" id="updatedDot"></span><span id="updatedText">불러오는 중</span></span>
+      <span class="chip" title="다음 자동 수집까지 남은 시간">다음 수집 <span class="timer" id="timer">--:--</span></span>
+      <button class="icon" id="refresh" type="button">새로고침</button>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="보기">
+    <button role="tab" data-tab="today" aria-selected="true" id="tab-today">오늘</button>
+    <button role="tab" data-tab="valorant" aria-selected="false" id="tab-valorant">발로란트</button>
+    <button role="tab" data-tab="tips" aria-selected="false" id="tab-tips">꿀팁</button>
+    <button role="tab" data-tab="ai" aria-selected="false" id="tab-ai">AI</button>
+    <button role="tab" data-tab="refs" aria-selected="false" id="tab-refs">레퍼런스</button>
+    <button role="tab" data-tab="saved" aria-selected="false" id="tab-saved">저장</button>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="brief" id="brief" hidden></section>
+
+  <div class="controls">
+    <div class="chips" id="chips" role="group" aria-label="분류"></div>
+    <div class="row">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="제목·출처·태그 검색" autocomplete="off" aria-label="검색">
+      </label>
+      <select id="mapSel" aria-label="맵" hidden></select>
+      <select id="agentSel" aria-label="요원" hidden></select>
+      <select id="qSel" aria-label="찾은 검색어" hidden></select>
+      <select id="chSel" aria-label="채널" hidden></select>
+      <select id="lenSel" aria-label="언어·길이" hidden></select>
+    </div>
+  </div>
+
+  <div id="view"></div>
+
+  <footer class="foot-info">
+    <details id="srcBox">
+      <summary id="srcSummary">수집 소스</summary>
+      <div class="srcs" id="srcList"></div>
+    </details>
+    <details id="tipSrcBox" hidden>
+      <summary id="tipSrcSummary">꿀팁 수집</summary>
+      <p id="tipUsage" style="margin:8px 0 0"></p>
+      <div class="srcs" id="tipSrcList"></div>
+    </details>
+    <div id="installHint">휴대폰 홈 화면에 앱처럼 두려면: 아이폰은 Safari 공유 버튼 → <b>홈 화면에 추가</b>, 안드로이드는 Chrome 메뉴 → <b>앱 설치</b>.</div>
+    <button class="install" id="installBtn" type="button" hidden>앱 설치</button>
+    <div>GitHub Actions가 하루 3~4번 자동으로 모아요. 소식 소스는 저장소의 <code>scripts/radar/sources.json</code>, 꿀팁 채널·검색어는 <code>scripts/radar/tips_sources.json</code>에서 바꿔요. 레퍼런스는 코치가 직접 고른 목록이에요.</div>
+    <div class="legal">꿀팁 영상 정보는 YouTube API 서비스로 받아요 · <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">YouTube 서비스 약관</a> · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 개인정보처리방침</a> · <a href="privacy.html">이 앱의 개인정보처리방침</a></div>
+  </footer>
+</main>
+
+<div class="dialog" id="agree" role="dialog" aria-modal="true" aria-labelledby="agreeTitle" hidden>
+  <div class="box">
+    <h2 id="agreeTitle">꿀팁을 열기 전에</h2>
+    <p>꿀팁 탭은 YouTube API 서비스로 공개 영상 정보(제목·채널·올린 날·길이·썸네일)를 받아 보여 줘요.</p>
+    <p>이 앱을 쓰면 YouTube 서비스 약관과 이 앱의 개인정보처리방침에 동의하는 거예요. 이 앱은 계정이 없고, 읽음·저장 표시는 이 기기에만 남아요.</p>
+    <div class="links">
+      <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">YouTube 서비스 약관</a>
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 개인정보처리방침</a>
+      <a href="privacy.html">이 앱의 개인정보처리방침</a>
+    </div>
+    <button type="button" id="agreeBtn">동의하고 열기</button>
+    <button type="button" class="later" id="agreeLater">닫기</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const KST = "Asia/Seoul";
+  const PT = "America/Los_Angeles";
+  const STORE = { tab: "radar.tab", seen: "radar.lastSeen", read: "radar.read", saved: "radar.saved", agree: "radar.agree", tipsWeek: "radar.tipsWeek" };
+  const PAGE = 60;
+  const TABS = ["today", "valorant", "tips", "ai", "refs", "saved"];
+  const KINDS = ["꿀팁·강의", "셋업·스킬", "월뱅·잡기술", "대회·메타", "공식"];
+  const TIP_SAVE_DAYS = 30;          // 저장한 꿀팁(영상 id·코드만)은 이 기기에서 30일 뒤 지움
+  const LONG_SEC = 180;
+  const VIDEO_ID = /^[\w-]{11}$/;
+
+  const store = {
+    get(k, fallback) { try { const v = localStorage.getItem(k); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* 저장 불가 환경 */ } },
+  };
+
+  const hashTab = (location.hash || "").slice(1);
+  const state = {
+    tab: TABS.includes(hashTab) ? hashTab : store.get(STORE.tab, "today"),
+    chip: "전체",
+    q: "",
+    map: "",
+    agent: "",
+    qid: "",
+    ch: "",
+    len: "",
+    limit: PAGE,
+    data: null,
+    refs: null,
+    refcheck: null,
+    tips: null,
+    tipMap: new Map(),
+    chByHandle: new Map(),
+    chByCid: new Map(),
+    qById: new Map(),
+    agreed: !!store.get(STORE.agree, ""),
+    prevSeen: store.get(STORE.seen, null),
+    read: new Set(store.get(STORE.read, [])),
+    saved: store.get(STORE.saved, {}),
+  };
+  if (!TABS.includes(state.tab)) state.tab = "today";
+  if (state.tab === "tips") state.chip = "이번 주";
+  if (!state.saved || typeof state.saved !== "object") state.saved = {};
+  (function pruneSavedTips() {
+    const cut = Date.now() - TIP_SAVE_DAYS * 86400000; let changed = false;
+    Object.keys(state.saved).forEach((k) => {
+      const e = state.saved[k];
+      if (e && e.tip && !(new Date(e.savedAt).getTime() >= cut)) { delete state.saved[k]; changed = true; }
+    });
+    if (changed) store.set(STORE.saved, state.saved);
+  })();
+
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const safeHref = (u) => (/^https?:\/\//i.test(u || "") ? u : "#");
+  const num = (n) => Number(n || 0).toLocaleString("ko-KR");
+
+  const fmtDay = new Intl.DateTimeFormat("ko-KR", { timeZone: KST, month: "long", day: "numeric", weekday: "short" });
+  const fmtKey = new Intl.DateTimeFormat("en-CA", { timeZone: KST, year: "numeric", month: "2-digit", day: "2-digit" });
+  const fmtTime = new Intl.DateTimeFormat("ko-KR", { timeZone: KST, month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
+  const fmtPtKey = new Intl.DateTimeFormat("en-CA", { timeZone: PT, year: "numeric", month: "2-digit", day: "2-digit" });
+
+  function ago(iso) {
+    const d = new Date(iso); const s = (Date.now() - d.getTime()) / 1000;
+    if (!isFinite(s)) return "";
+    if (s < 90) return "방금";
+    if (s < 3600) return Math.round(s / 60) + "분 전";
+    if (s < 86400) return Math.round(s / 3600) + "시간 전";
+    if (s < 172800) return "어제";
+    if (s < 30 * 86400) return Math.floor(s / 86400) + "일 전";
+    if (s < 365 * 86400) return Math.floor(s / (30 * 86400)) + "달 전";
+    return Math.floor(s / (365 * 86400)) + "년 전";
+  }
+  function dayLabel(iso) {
+    const d = new Date(iso);
+    const key = fmtKey.format(d), today = fmtKey.format(new Date()), yest = fmtKey.format(new Date(Date.now() - 86400000));
+    const base = fmtDay.format(d);
+    return key === today ? "오늘 · " + base : key === yest ? "어제 · " + base : base;
+  }
+  function fmtDur(sec) {
+    const s = Math.max(0, Math.round(sec || 0)); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60;
+    return (h ? h + ":" + String(m).padStart(2, "0") : String(m)) + ":" + String(x).padStart(2, "0");
+  }
+  // 유튜브 API 하루 몫은 태평양 시각 자정에 새로 셈 → 한국 시각으로는 오후 5시(여름엔 4시)
+  function resetLabel() {
+    const now = new Date();
+    const hourIn = (tz) => Number(new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "numeric", hourCycle: "h23" }).format(now)) % 24;
+    const h = (hourIn(KST) - hourIn(PT) + 24) % 24;
+    return (h >= 12 ? "오후 " + (h - 12 || 12) : "오전 " + h) + "시";
+  }
+  function weekRange(w) {
+    if (!w || !/^\d{4}-\d{2}-\d{2}$/.test(w.start || "")) return w?.id || "";
+    const a = new Date(w.start + "T12:00:00+09:00"), b = new Date(a.getTime() + 6 * 86400000);
+    return fmtDay.format(a) + " ~ " + fmtDay.format(b);
+  }
+
+  // ---------- 데이터 ----------
+  async function getJson(name, bust) {
+    const res = await fetch(name + (bust ? "?t=" + Date.now() : ""), { cache: bust ? "no-store" : "no-cache" });
+    if (!res.ok) throw new Error(String(res.status));
+    return res.json();
+  }
+  async function loadData(bust) {
+    const [data, refs, refcheck, tips] = await Promise.allSettled([
+      getJson("data.json", bust), getJson("references.json", bust), getJson("refcheck.json", bust), getJson("tips.json", bust),
+    ]);
+    if (data.status === "fulfilled") state.data = data.value;
+    if (refs.status === "fulfilled") state.refs = refs.value;
+    if (refcheck.status === "fulfilled") state.refcheck = refcheck.value?.results || null;
+    if (tips.status === "fulfilled" && tips.value && Array.isArray(tips.value.items)) { state.tips = tips.value; indexTips(); }
+  }
+  function indexTips() {
+    const t = state.tips || {};
+    // 유튜브 API 정보는 30일 안에 다시 받아야 함 — 인터넷이 끊겨 저장본만 남은 채 29일이 지나면 목록을 숨김
+    if (Date.now() - new Date(t.generated_at).getTime() > 29 * 86400000) {
+      t.items = []; t.week = Object.assign({}, t.week, { items: [] }); t.status = Object.assign({}, t.status, { error: "stale" });
+    }
+    state.tipMap = new Map((t.items || []).map((it) => [it.id, it]));
+    state.chByHandle = new Map((t.channels || []).map((c) => [c.handle, c]));
+    state.chByCid = new Map();
+    Object.entries(t.state?.channels || {}).forEach(([h, v]) => { if (v && v.id && state.chByHandle.has(h)) state.chByCid.set(v.id, state.chByHandle.get(h)); });
+    state.qById = new Map((t.queries || []).map((x) => [x.id, x]));
+  }
+
+  const items = () => (state.data && Array.isArray(state.data.items) ? state.data.items : []);
+  const tipItems = () => (state.tips && Array.isArray(state.tips.items) ? state.tips.items : []);
+  const isNew = (it) => state.prevSeen && it.f && it.f > state.prevSeen;
+
+  function chipsFor(tab) {
+    if (tab === "valorant") return ["전체", "대회", "공식·패치", "메타", "라인업", "코칭", "이적", "커뮤니티", "뉴스"];
+    if (tab === "tips") return ["이번 주", "전체", "검색어로 찾은 것", ...KINDS];
+    if (tab === "ai") return ["전체", "Claude", "에이전트", "코딩", "AI×게임·교육", "공식 블로그", "실전·도구", "커뮤니티", "뉴스"];
+    if (tab === "today") return ["전체", "발로란트", "AI", "새 글"];
+    if (tab === "saved") return ["전체", "발로란트", "꿀팁", "AI"];
+    if (tab === "refs") {
+      const cats = new Set();
+      (state.refs?.items || []).forEach((r) => (r.cat || []).forEach((c) => cats.add(c)));
+      const order = ["메타", "라인업", "전략", "VOD·관전", "패치", "통계 툴", "기초 개념"];
+      return ["전체", "바로 씀", ...order.filter((c) => cats.has(c)), ...[...cats].filter((c) => !order.includes(c))];
+    }
+    return ["전체"];
+  }
+
+  function matchChip(it, chip) {
+    if (chip === "전체") return true;
+    if (chip === "꿀팁") return !!it.tip;
+    if (chip === "발로란트") return it.c === "valorant";
+    if (chip === "AI") return it.c === "ai";
+    if (chip === "새 글") return isNew(it);
+    if (chip === "AI×게임·교육") return it.g === chip || (it.tags || []).some((t) => t === "AI×게임" || t === "교육");
+    return it.g === chip || (it.tags || []).includes(chip);
+  }
+  function matchQuery(it, q) {
+    if (!q) return true;
+    if (it.tip) {
+      const t = state.tipMap.get(it.id);
+      return t ? matchTip(t, q) : (it.code || "").toLowerCase().includes(q);
+    }
+    const hay = (it.t + " " + (it.d || "") + " " + it.s + " " + (it.tags || []).join(" ")).toLowerCase();
+    return q.split(/\s+/).every((w) => hay.includes(w));
+  }
+
+  function selectItems() {
+    const q = state.q.trim().toLowerCase();
+    let list;
+    if (state.tab === "saved") {
+      list = Object.entries(state.saved).map(([k, e]) => Object.assign({}, e, { _key: k }))
+        .sort((a, b) => (b.savedAt || "").localeCompare(a.savedAt || ""));
+    } else if (state.tab === "today") {
+      const since = Date.now() - 36 * 3600 * 1000;
+      const recent = items().filter((it) => new Date(it.p).getTime() >= since);
+      list = recent.filter((it) => it.pick || it.g === "공식·패치" || it.g === "Claude");
+      if (list.length < 12) {
+        const ids = new Set(list.map((x) => x.id));
+        list = list.concat(recent.filter((x) => !ids.has(x.id)).slice(0, 24 - list.length));
+        list.sort((a, b) => b.p.localeCompare(a.p));
+      }
+    } else list = items().filter((it) => it.c === state.tab);
+    return list.filter((it) => matchChip(it, state.chip) && matchQuery(it, q));
+  }
+
+  // ---------- 꿀팁: 찾은 곳 · 넣을 칸 이름 ----------
+  function chanOf(it) {
+    const v = (it.via || []).find((x) => x.startsWith("ch:"));
+    if (v && state.chByHandle.has(v.slice(3))) return state.chByHandle.get(v.slice(3));
+    return state.chByCid.get(it.cid) || null;
+  }
+  // short: 카드 꼬리표용 — 채널 이름은 카드 윗줄에 이미 있어서 '채널 새 영상'만
+  function viaLabel(v, short) {
+    if (v.startsWith("q:")) { const q = state.qById.get(v.slice(2)); return "검색 · " + (q ? q.label : v.slice(2)); }
+    if (v.startsWith("ch:")) { if (short) return "채널 새 영상"; const c = state.chByHandle.get(v.slice(3)); return "채널 · " + (c ? c.name : v.slice(3)); }
+    return v;
+  }
+  // 넣을 칸: 짧은 이름(카드) · 긴 이름(설명) — 맵 공략 오프앵글·월뱅·꿀팁 레퍼런스 / 매뉴얼 03 라인전 위치 / 요원 카드
+  function toLabel(to, long) {
+    if (!to) return "";
+    const N = state.tips?.names || {}, maps = N.maps || {}, agents = N.agents || {};
+    const [k, a, b] = String(to).split(":");
+    const field = { offrefs: "오프앵글", wallrefs: "월뱅", tiprefs: "꿀팁" }[b] || b;
+    if (k === "mg") return long ? "맵 공략 " + (maps[a] || a) + " · " + field + " 레퍼런스" : (maps[a] || a) + " " + field;
+    if (k === "lane") return long ? "매뉴얼 " + (agents[a] || a) + " " + (maps[b] || b) + " · 03 라인전 위치 레퍼런스" : (agents[a] || a) + " " + (maps[b] || b) + " 라인전";
+    if (k === "agent") return long ? "요원 " + (agents[a] || a) + " · 꿀팁 영상 (새 칸 — 정할 것)" : (agents[a] || a) + " 요원 영상";
+    return String(to);
+  }
+  function matchTip(it, q) {
+    if (!q) return true;
+    const hay = [it.t, it.ch, it.code, toLabel(it.to, true), ...(it.via || []).map((v) => viaLabel(v))].join(" ").toLowerCase();
+    return q.split(/\s+/).every((w) => hay.includes(w));
+  }
+  function tipList() {
+    const q = state.q.trim().toLowerCase();
+    return tipItems().filter((it) => {
+      const via = it.via || [];
+      if (state.chip === "검색어로 찾은 것" && !via.some((v) => v.startsWith("q:"))) return false;
+      if (KINDS.includes(state.chip) && chanOf(it)?.kind !== state.chip) return false;
+      if (state.qid && !via.includes("q:" + state.qid)) return false;
+      if (state.ch) { const c = chanOf(it); if (state.ch === "_other" ? c : c?.handle !== state.ch) return false; }
+      if ((state.len === "ko" || state.len === "en") && it.lang !== state.len) return false;
+      if (state.len === "long" && !(it.dur > LONG_SEC)) return false;
+      return matchTip(it, q);
+    });
+  }
+
+  // ---------- 화면 ----------
+  function renderHeader() {
+    const d = state.data;
+    const dot = $("updatedDot");
+    if (!d) { $("updatedText").textContent = "데이터 없음"; dot.className = "dot err"; }
+    else {
+      const gen = new Date(d.generated_at);
+      const ok = (d.sources || []).filter((s) => s.ok).length, total = (d.sources || []).length;
+      const age = Date.now() - gen.getTime();
+      const stopped = age > 24 * 3600 * 1000;
+      const late = age > (d.next_hours || 3) * 3600 * 1000 + 90 * 60 * 1000;
+      $("updatedText").textContent = stopped ? "수집 멈춤 · " + ago(d.generated_at) + " 갱신" : ago(d.generated_at) + " 갱신 · 소스 " + ok + "/" + total;
+      dot.className = "dot" + (late ? " err" : ok < total ? " warn" : "");
+      $("updated").title = "마지막 수집 " + fmtTime.format(gen) + (stopped
+        ? " · 하루 넘게 새 수집이 없어요. GitHub Actions 예약 실행이 꺼졌는지 확인해 주세요 (저장소에 60일 동안 변화가 없으면 GitHub가 예약 실행을 꺼요)"
+        : late ? " · 자동 수집이 늦어지고 있어요" : "");
+
+      const list = $("srcList"); list.replaceChildren();
+      (d.sources || []).forEach((s) => list.append(srcRow(s.name, s.ok, s.ok ? s.count + "건" : "실패", s.error)));
+      $("srcSummary").textContent = "수집 소스 " + ok + "/" + total + " 정상";
+    }
+
+    const newVal = items().filter((it) => it.c === "valorant" && isNew(it)).length;
+    const newAi = items().filter((it) => it.c === "ai" && isNew(it)).length;
+    setBadge("tab-valorant", newVal); setBadge("tab-ai", newAi);
+    const w = state.tips?.week;
+    const nWeek = w && w.id && store.get(STORE.tipsWeek, "") !== w.id ? (w.items || []).filter((e) => !e.gone).length : 0;
+    setBadge("tab-tips", nWeek, 0, "이번 주 후보 " + nWeek + "개");
+    setBadge("tab-saved", 0, Object.keys(state.saved).length);
+    renderTipFooter();
+  }
+  function srcRow(name, ok, right, err) {
+    const row = el("div");
+    const dt = el("span"); dt.style.cssText = "width:6px;height:6px;border-radius:50%;flex:0 0 auto;background:" + (ok ? "var(--mint)" : "var(--val)");
+    row.append(dt, el("span", "nm", name), el("span", "cnt", right));
+    if (!ok && err) row.title = err;
+    return row;
+  }
+  function setBadge(id, n, plain, title) {
+    const b = $(id); b.querySelector(".n")?.remove(); b.querySelector(".c")?.remove();
+    if (n > 0) { const s = el("span", "n", n > 99 ? "99+" : String(n)); s.title = title || "새 글 " + n + "건"; b.append(s); }
+    else if (plain) { const s = el("span", "c", String(plain)); s.style.cssText = "font-family:var(--display);font-size:12px;opacity:.7"; b.append(s); }
+  }
+  function renderTipFooter() {
+    const t = state.tips, box = $("tipSrcBox");
+    if (!t) { box.hidden = true; return; }
+    box.hidden = false;
+    $("tipSrcSummary").textContent = "꿀팁 수집 · 영상 " + num(tipItems().length) + "개";
+    const u = t.usage || {}, todayPt = fmtPtKey.format(new Date()), same = u.day === todayPt;
+    $("tipUsage").textContent = "오늘 쓴 유튜브 API 몫: 검색 " + num(same ? u.search : 0) + "/" + num(u.search_max) + "번 · 단위 " + num(same ? u.units : 0) + "/" + num(u.units_max)
+      + " (레이더가 정한 하루 한도). 한국 시각 " + resetLabel() + "에 새로 세요." + (t.generated_at ? " 지난 수집 " + fmtTime.format(new Date(t.generated_at)) + "." : "");
+    const list = $("tipSrcList"); list.replaceChildren();
+    (t.sources || []).forEach((r) => {
+      const kind = r.id.startsWith("q:") ? "검색 · " : r.id.startsWith("ch:") ? "채널 · " : "";
+      list.append(srcRow(kind + r.name, r.ok, r.ok ? r.count + "개" : "실패", r.error));
+    });
+  }
+
+  function renderBrief() {
+    const box = $("brief"); const b = state.data?.briefing;
+    if (!b || ["refs", "saved", "tips"].includes(state.tab) || (!b.valorant?.length && !b.ai?.length)) { box.hidden = true; return; }
+    box.replaceChildren();
+    const h = el("h2"); h.append(el("span", null, "오늘의 브리핑 · Claude 요약"), el("em", null, b.date || ""));
+    const cols = el("div", "cols");
+    [["valorant", "VALORANT", "val"], ["ai", "AI", "ai"]].forEach(([k, label, cls]) => {
+      if (state.tab !== "today" && state.tab !== k) return;
+      const col = el("div", "col"); col.append(el("div", "lab " + cls, label));
+      const ul = el("ul"); (b[k] || []).forEach((line) => ul.append(el("li", null, line))); col.append(ul); cols.append(col);
+    });
+    if (state.tab !== "today") cols.style.gridTemplateColumns = "1fr";
+    box.append(h, cols);
+    if (b.idea && state.tab === "today") { const p = el("p", "idea"); p.append(el("b", null, "써 볼 만한 것 "), document.createTextNode(b.idea)); box.append(p); }
+    box.hidden = false;
+  }
+
+  function renderChips() {
+    const wrap = $("chips"); wrap.replaceChildren();
+    const opts = chipsFor(state.tab);
+    if (!opts.includes(state.chip)) state.chip = opts[0];
+    opts.forEach((c) => {
+      const b = el("button", null, c); b.type = "button"; b.setAttribute("aria-pressed", String(c === state.chip));
+      b.addEventListener("click", () => { state.chip = c; state.limit = PAGE; render(); });
+      wrap.append(b);
+    });
+    const refs = state.tab === "refs", tips = state.tab === "tips", lib = tips && state.chip !== "이번 주" && !!state.tips;
+    $("mapSel").hidden = !refs; $("agentSel").hidden = !refs;
+    $("qSel").hidden = !lib; $("chSel").hidden = !lib; $("lenSel").hidden = !lib;
+    $("q").placeholder = refs ? "이름·메모 검색" : tips ? "제목·채널·코드 검색" : "제목·출처·태그 검색";
+    if (refs) fillRefSelects();
+    if (lib) fillTipSelects();
+  }
+
+  function saveBtn(key, make) {
+    const sv = el("button", "save"); sv.type = "button";
+    const setSv = () => { const on = !!state.saved[key]; sv.setAttribute("aria-pressed", String(on)); sv.textContent = on ? "저장됨" : "저장"; };
+    sv.addEventListener("click", () => {
+      if (state.saved[key]) delete state.saved[key]; else state.saved[key] = Object.assign(make(), { savedAt: new Date().toISOString() });
+      store.set(STORE.saved, state.saved); setSv(); renderHeader();
+      if (state.tab === "saved") render();
+    });
+    setSv(); return sv;
+  }
+
+  function itemCard(it) {
+    const art = el("article", "item" + (state.read.has(it.id) ? " read" : ""));
+    const main = el("div", "main");
+    const meta = el("div", "meta");
+    meta.append(el("span", "side " + it.c, it.c === "valorant" ? "VAL" : "AI"), el("span", "src", it.s), el("span", null, "· " + ago(it.p)));
+    if (isNew(it) && state.tab !== "saved") meta.append(el("span", "new", "NEW"));
+    const a = el("a", "title", it.t); a.href = safeHref(it.u); a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.addEventListener("click", () => { state.read.add(it.id); art.classList.add("read"); store.set(STORE.read, [...state.read].slice(-3000)); });
+    main.append(meta, a);
+    if (it.d) main.append(el("p", "desc", it.d));
+    const foot = el("div", "foot");
+    (it.tags || []).forEach((t) => foot.append(el("span", "tag" + (["코칭", "메타", "라인업", "Claude", "AI×게임", "교육"].includes(t) ? " hot" : ""), t)));
+    const clean = Object.assign({}, it); delete clean._key;
+    foot.append(saveBtn(it._key || it.id, () => clean)); main.append(foot);
+    art.append(main);
+    if (it.img) { const im = el("img", "thumb"); im.src = it.img; im.alt = ""; im.loading = "lazy"; im.referrerPolicy = "no-referrer"; im.addEventListener("error", () => im.remove()); art.append(im); }
+    return art;
+  }
+
+  function tipCard(it, n) {
+    const rid = "t:" + it.id;
+    const art = el("article", "item tip" + (state.read.has(rid) ? " read" : ""));
+    if (n != null) { const b = el("span", "num", String(n)); b.title = "이번 주 " + n + "번"; art.append(b); }
+    const markRead = () => { state.read.add(rid); art.classList.add("read"); store.set(STORE.read, [...state.read].slice(-3000)); };
+    const main = el("div", "main");
+    const meta = el("div", "meta");
+    meta.append(el("span", "yt", "YouTube"), el("span", "src", it.ch || ""), el("span", null, "· " + ago(it.p)));
+    if (it.dur) meta.append(el("span", null, "· " + fmtDur(it.dur)));
+    const a = el("a", "title", it.t); a.href = safeHref(it.u); a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.addEventListener("click", markRead);
+    main.append(meta, a);
+    const thumb = (where) => {
+      const link = el("a", "thumb-link " + where); link.href = safeHref(it.u); link.target = "_blank"; link.rel = "noopener noreferrer"; link.tabIndex = -1;
+      link.setAttribute("aria-hidden", "true"); link.addEventListener("click", markRead);
+      const im = el("img", "thumb wide"); im.src = it.img; im.alt = ""; im.loading = "lazy"; im.referrerPolicy = "no-referrer";
+      im.addEventListener("error", () => link.remove());
+      link.append(im); return link;
+    };
+    if (it.img) main.append(thumb("inline"));
+    const foot = el("div", "foot");
+    foot.append(el("span", "badge code", it.code));
+    const to = toLabel(it.to);
+    if (to) { const b = el("span", "badge to", "넣을 칸 · " + to); b.title = "넣을 칸 제안: " + toLabel(it.to, true) + ". 이 검색어에 미리 정해 둔 칸이에요. 영상 내용을 보고 정한 게 아니에요."; foot.append(b); }
+    if (it.old) { const b = el("span", "badge warn", "예전 영상일 수 있어요"); b.title = "올린 지 1년이 넘었거나, 맵이 바뀌기 전에 올라온 영상이에요."; foot.append(b); }
+    [...new Set((it.via || []).map((v) => viaLabel(v, true)))].slice(0, 2).forEach((t) => foot.append(el("span", "tag", t)));
+    foot.append(saveBtn(rid, () => ({ tip: true, id: it.id, code: it.code })));
+    main.append(foot);
+    art.append(main);
+    if (it.img) art.append(thumb("side"));
+    return art;
+  }
+  function weekGoneCard(e) {
+    const art = el("article", "item gone");
+    art.append(el("span", "num", String(e.n)));
+    const main = el("div", "main");
+    main.append(el("div", "meta", e.code + " · 목록에서 빠졌어요"));
+    main.append(el("p", "desc", "영상이 비공개로 바뀌었거나 지워졌어요. 이 번호는 매뉴얼북에 넣지 않아요."));
+    art.append(main);
+    return art;
+  }
+  function savedTipGoneCard(e) {
+    const art = el("article", "item gone");
+    const main = el("div", "main");
+    main.append(el("div", "meta", "저장한 꿀팁 · " + (e.code || "")));
+    const ok = VIDEO_ID.test(e.id || "");
+    const a = el("a", "title", state.tips ? "목록에서 빠진 영상이에요. YouTube에서 열기" : "꿀팁 목록을 불러오지 못했어요. YouTube에서 열기");
+    a.href = ok ? "https://www.youtube.com/watch?v=" + e.id : "#"; a.target = "_blank"; a.rel = "noopener noreferrer";
+    const foot = el("div", "foot");
+    const clean = Object.assign({}, e); delete clean._key;
+    foot.append(saveBtn(e._key, () => clean));
+    main.append(a, foot); art.append(main);
+    return art;
+  }
+
+  function renderFeed(view) {
+    if (!state.data && state.tab !== "saved") {
+      view.append(el("div", "empty", "첫 수집을 기다리고 있어요. 자동 수집이 끝나면(보통 몇 분) 새로고침해 주세요."));
+      return;
+    }
+    const list = selectItems();
+    if (!list.length) {
+      const msg = state.tab === "saved" ? "저장한 글이 없어요. 카드의 ‘저장’을 누르면 여기 모여요." : state.q ? "검색 결과가 없어요." : "이 분류에는 아직 글이 없어요.";
+      view.append(el("div", "empty", msg)); return;
+    }
+    let lastDay = "", box = null;
+    list.slice(0, state.limit).forEach((it) => {
+      const day = state.tab === "saved" ? "" : dayLabel(it.p);
+      if (!box || day !== lastDay) { if (day) view.append(el("div", "day", day)); box = el("div", "list"); view.append(box); lastDay = day; }
+      if (it.tip) { const t = state.tipMap.get(it.id); box.append(t ? tipCard(t) : savedTipGoneCard(it)); }
+      else box.append(itemCard(it));
+    });
+    if (list.length > state.limit) {
+      const more = el("button", "more", "더 보기 (" + (list.length - state.limit) + "건 남음)"); more.type = "button";
+      more.addEventListener("click", () => { state.limit += PAGE; render(); }); view.append(more);
+    }
+  }
+
+  // ---------- 꿀팁 ----------
+  function statusNote(t) {
+    const e = t.status?.error || "";
+    if (e === "nokey") return "유튜브 API 키가 없어서 새 영상을 못 모았어요. 저장소 Settings → Secrets에 YOUTUBE_API_KEY를 넣으면 다음 수집부터 모여요.";
+    if (e === "quota") return "오늘 유튜브 API 몫을 다 썼어요. 한국 시각 " + resetLabel() + "에 새로 세고, 그 뒤 수집부터 이어서 모아요.";
+    if (e === "key") return "유튜브 API 키를 확인해야 해요. 키가 막혔거나 YouTube Data API v3가 꺼져 있을 수 있어요.";
+    if (e === "net" || e === "http") return "지난 수집 때 유튜브에 연결하지 못했어요. 다음 수집 때 다시 해요.";
+    if (e === "stale") return "꿀팁 목록이 한 달 가까이 지나서 숨겼어요. 인터넷에 연결한 뒤 새로고침해 주세요.";
+    return "";
+  }
+  async function copyText(btn, wrap, text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = "복사했어요"; setTimeout(() => { btn.textContent = "답 틀 복사"; }, 1800);
+    } catch {
+      let ta = wrap.querySelector("textarea");
+      if (!ta) { ta = el("textarea"); ta.rows = 2; ta.readOnly = true; ta.setAttribute("aria-label", "답 틀"); wrap.append(ta); }
+      ta.value = text; ta.focus(); ta.select(); btn.textContent = "아래 글을 복사해 주세요";
+    }
+  }
+  function renderWeek(view) {
+    const w = state.tips.week || {}, entries = w.items || [];
+    const sec = el("section", "week");
+    const h = el("h2"); h.append(el("span", null, "이번 주 후보 " + entries.length + "개"), el("em", null, weekRange(w)));
+    sec.append(h);
+    if (entries.length && w.sealed === false) {
+      sec.append(el("p", null, "아직 검색 전이라 채널 새 영상만 들어 있어요. 다음 예약 수집 때 검색 결과까지 넣어 번호를 다시 매기니, 그 뒤에 골라 주세요."));
+    } else if (entries.length) {
+      const p1 = el("p"); p1.append(document.createTextNode("좋은 영상은 번호로 골라 Claude에게 보내 주세요. 예: "), el("b", null, "2, 5 빼 / 7 → 라인전 / 나머지 OK"));
+      const p2 = el("p", null, "번호는 이번 주(월~일) 동안 그대로예요. 지난 4주 번호도 남아 있어서 늦게 답해도 돼요.");
+      const cp = el("button", "copy", "답 틀 복사"); cp.type = "button";
+      const last = entries[entries.length - 1].n;
+      cp.addEventListener("click", () => copyText(cp, sec, "레이더 꿀팁 " + w.id + " (1~" + last + "번) — 빼: / 칸 바꿈: / 나머지 OK"));
+      sec.append(p1, p2, cp);
+    } else sec.append(el("p", null, "이번 주 후보가 아직 없어요. 다음 수집 때 다시 골라요."));
+    view.append(sec);
+    const q = state.q.trim().toLowerCase();
+    const box = el("div", "list"); box.style.marginTop = "12px";
+    entries.forEach((e) => {
+      const it = state.tipMap.get(e.id);
+      if (it && !e.gone) { if (matchTip(it, q)) box.append(tipCard(it, e.n)); }
+      else if (!q) box.append(weekGoneCard(e));
+    });
+    if (q && !box.childElementCount) box.append(el("div", "empty", "이번 주 후보에서 찾는 영상이 없어요."));
+    view.append(box);
+  }
+  function fillTipSelects() {
+    const t = state.tips || {};
+    const opt = (v, label, cur) => { const o = el("option", null, label); o.value = v; if (v === cur) o.selected = true; return o; };
+    const qs = $("qSel"); qs.replaceChildren(opt("", "검색어 전체", state.qid));
+    [["mg", "맵 공략"], ["lane", "라인전 위치"], ["agent", "요원"]].forEach(([k, label]) => {
+      const list = (t.queries || []).filter((x) => String(x.to || "").split(":")[0] === k);
+      if (!list.length) return;
+      const g = el("optgroup"); g.label = label;
+      list.forEach((x) => g.append(opt(x.id, x.label, state.qid)));
+      qs.append(g);
+    });
+    const cs = $("chSel"); cs.replaceChildren(opt("", "채널 전체", state.ch));
+    KINDS.forEach((k) => {
+      const list = (t.channels || []).filter((c) => c.kind === k);
+      if (!list.length) return;
+      const g = el("optgroup"); g.label = k;
+      list.forEach((c) => g.append(opt(c.handle, c.name, state.ch)));
+      cs.append(g);
+    });
+    cs.append(opt("_other", "그 밖 채널 (검색으로 찾은 것)", state.ch));
+    const ls = $("lenSel"); ls.replaceChildren(opt("", "언어·길이 전체", state.len), opt("ko", "한국어", state.len), opt("en", "영어", state.len), opt("long", "3분 넘는 것만", state.len));
+  }
+  function renderTips(view) {
+    if (!state.agreed) { view.append(el("div", "empty", "‘동의하고 열기’를 누르면 꿀팁 영상이 보여요.")); openAgree(); return; }
+    const t = state.tips;
+    if (!t) { view.append(el("div", "empty", "꿀팁은 아직 첫 수집 전이에요. 자동 수집이 한 번 돌면 여기에 모여요.")); return; }
+    view.append(el("p", "tip-head", "정해 둔 채널과 검색어로 찾은 유튜브 영상이에요. ‘넣을 칸’은 검색어마다 미리 정해 둔 제안이라 영상 내용과 다를 수 있어요."));
+    const note = statusNote(t); if (note) view.append(el("p", "tip-note", note));
+    const w = t.week;
+    if (w && w.id && store.get(STORE.tipsWeek, "") !== w.id) { store.set(STORE.tipsWeek, w.id); setBadge("tab-tips", 0); }
+    if (state.chip === "이번 주") { renderWeek(view); return; }
+    const list = tipList();
+    view.append(el("p", "ref-head", "영상 " + num(list.length) + "개 · 올린 날 순"));
+    if (!list.length) { view.append(el("div", "empty", tipItems().length ? "조건에 맞는 영상이 없어요." : "아직 모은 영상이 없어요.")); return; }
+    const box = el("div", "list"); box.style.marginTop = "12px";
+    list.slice(0, state.limit).forEach((it) => box.append(tipCard(it)));
+    view.append(box);
+    if (list.length > state.limit) {
+      const more = el("button", "more", "더 보기 (" + (list.length - state.limit) + "개 남음)"); more.type = "button";
+      more.addEventListener("click", () => { state.limit += PAGE; render(); }); view.append(more);
+    }
+  }
+
+  // ---------- 처음 꿀팁을 열 때: 유튜브 약관 · 개인정보처리방침 안내 ----------
+  let lastTab = state.tab === "tips" ? "today" : state.tab;
+  function setInert(on) { document.querySelector("header.top").inert = on; document.querySelector("main").inert = on; }
+  function openAgree() {
+    const d = $("agree"); if (!d.hidden) return;
+    d.hidden = false; setInert(true);
+    setTimeout(() => $("agreeBtn").focus(), 0);
+  }
+  function closeAgree(ok) {
+    $("agree").hidden = true; setInert(false);
+    if (ok) { state.agreed = true; store.set(STORE.agree, new Date().toISOString().slice(0, 10)); }
+    else if (state.tab === "tips") { state.tab = lastTab; state.chip = "전체"; store.set(STORE.tab, state.tab); }
+    render();
+    $("tab-" + state.tab).focus();
+  }
+  $("agreeBtn").addEventListener("click", () => closeAgree(true));
+  $("agreeLater").addEventListener("click", () => closeAgree(false));
+  $("agree").addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { e.preventDefault(); closeAgree(false); return; }
+    if (e.key !== "Tab") return;
+    const f = [...$("agree").querySelectorAll("a[href], button")];
+    const i = f.indexOf(document.activeElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+  });
+
+  // ---------- 레퍼런스 ----------
+  function fillRefSelects() {
+    const refs = state.refs?.items || [];
+    const maps = new Set(), agents = new Set();
+    refs.forEach((r) => { (r.maps || []).forEach((m) => m !== "전체" && maps.add(m)); (r.agents || []).forEach((a) => a !== "전체" && agents.add(a)); });
+    const roles = ["타격대", "척후대", "전략가", "감시자"];
+    const fill = (sel, label, values, cur) => {
+      sel.replaceChildren(); const o = el("option", null, label); o.value = ""; sel.append(o);
+      values.forEach((v) => { const op = el("option", null, v); op.value = v; if (v === cur) op.selected = true; sel.append(op); });
+    };
+    fill($("mapSel"), "맵 전체", [...maps].sort((a, b) => a.localeCompare(b, "ko")), state.map);
+    fill($("agentSel"), "요원 전체", [...roles.filter((r) => agents.has(r)), ...[...agents].filter((a) => !roles.includes(a)).sort((a, b) => a.localeCompare(b, "ko"))], state.agent);
+  }
+
+  function renderRefs(view) {
+    const refs = state.refs?.items || [];
+    const head = el("p", "ref-head");
+    head.append(document.createTextNode((state.refs?.updated ? state.refs.updated + " 기준 " : "") + refs.length + "개"));
+    view.append(head);
+    if (!refs.length) { view.append(el("div", "empty", "레퍼런스를 정리하는 중이에요.")); return; }
+    const q = state.q.trim().toLowerCase();
+    const list = refs.filter((r) => {
+      if (state.chip === "바로 씀" && r.use_level !== "바로 씀") return false;
+      if (!["전체", "바로 씀"].includes(state.chip) && !(r.cat || []).includes(state.chip)) return false;
+      if (state.map && !(r.maps || []).includes(state.map) && !(r.maps || []).includes("전체")) return false;
+      if (state.agent && !(r.agents || []).includes(state.agent) && !(r.agents || []).includes("전체")) return false;
+      if (q) { const hay = [r.name, r.memo, (r.cat || []).join(" "), (r.agents || []).join(" "), (r.maps || []).join(" ")].join(" ").toLowerCase(); if (!q.split(/\s+/).every((w) => hay.includes(w))) return false; }
+      return true;
+    });
+    const rank = { "바로 씀": 0, "후보": 1, "참고만": 2 };
+    list.sort((x, y) => (rank[x.use_level] ?? 3) - (rank[y.use_level] ?? 3) || x.name.localeCompare(y.name, "ko"));
+    if (!list.length) { view.append(el("div", "empty", "조건에 맞는 레퍼런스가 없어요.")); return; }
+    const box = el("div", "list"); box.style.marginTop = "12px";
+    list.slice(0, state.limit).forEach((r) => {
+      const card = el("div", "ref");
+      const n = el("a", "name", r.name); n.href = safeHref(r.url); n.target = "_blank"; n.rel = "noopener noreferrer";
+      card.append(n);
+      const foot = el("div", "foot");
+      (r.cat || []).forEach((c) => foot.append(el("span", "badge cat", c)));
+      [r.format, r.lang, r.price].filter(Boolean).forEach((b) => foot.append(el("span", "badge", b)));
+      if (r.use_level) foot.append(el("span", "badge" + (r.use_level === "바로 씀" ? " go" : ""), r.use_level));
+      // 유튜브 레퍼런스는 점검하지 않음(유튜브 API 밖으로 유튜브 정보를 받지 않음) → 결과가 없으면 표시도 없음
+      const chk = state.refcheck && !r.youtube && state.refcheck["url:" + r.url];
+      if (chk) {
+        const st = chk.status || 0;
+        const when = " · " + (chk.checked || "").slice(0, 10) + " 점검";
+        if ([401, 403, 429].includes(st)) {
+          const b = el("span", "badge", "자동 확인 불가");
+          b.title = (chk.robots ? "사이트의 robots.txt가 자동 점검을 막아서 열어 보지 않았어요" : "사이트가 자동 점검을 막았어요(HTTP " + st + ")") + ". 브라우저로는 열려요" + when;
+          foot.append(b);
+        } else if (!(st >= 200 && st < 400)) {
+          const b = el("span", "badge warn", "링크 확인 안 됨"); b.title = (chk.error || "HTTP " + st) + when; foot.append(b);
+        }
+      }
+      const sp = [...(r.agents || []), ...(r.maps || [])].filter((x) => x !== "전체").slice(0, 5);
+      sp.forEach((x) => foot.append(el("span", "tag", x)));
+      card.append(foot);
+      if (r.memo) card.append(el("p", "memo", r.memo));
+      box.append(card);
+    });
+    view.append(box);
+    if (list.length > state.limit) {
+      const more = el("button", "more", "더 보기 (" + (list.length - state.limit) + "개 남음)"); more.type = "button";
+      more.addEventListener("click", () => { state.limit += PAGE; render(); }); view.append(more);
+    }
+  }
+
+  function render() {
+    document.querySelectorAll("nav.tabs button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === state.tab)));
+    renderChips(); renderBrief();
+    const view = $("view"); view.replaceChildren();
+    if (state.tab === "refs") renderRefs(view);
+    else if (state.tab === "tips") renderTips(view);
+    else renderFeed(view);
+  }
+
+  function tickTimer() {
+    const d = state.data; const t = $("timer");
+    if (!d) { t.textContent = "--:--"; return; }
+    const next = new Date(d.generated_at).getTime() + (d.next_hours || 3) * 3600 * 1000;
+    let s = Math.round((next - Date.now()) / 1000);
+    if (s <= 0) { t.textContent = "곧"; return; }
+    const h = Math.floor(s / 3600); s -= h * 3600; const m = Math.floor(s / 60); s -= m * 60;
+    t.textContent = (h ? h + ":" : "") + String(m).padStart(h ? 2 : 1, "0") + ":" + String(s).padStart(2, "0");
+  }
+
+  // ---------- 이벤트 ----------
+  document.querySelectorAll("nav.tabs button").forEach((b) => b.addEventListener("click", () => {
+    if (state.tab !== b.dataset.tab && state.tab !== "tips") lastTab = state.tab;
+    state.tab = b.dataset.tab; state.chip = state.tab === "tips" ? "이번 주" : "전체"; state.limit = PAGE;
+    store.set(STORE.tab, state.tab); render(); window.scrollTo({ top: 0 });
+  }));
+  let qTimer;
+  $("q").addEventListener("input", (e) => { clearTimeout(qTimer); qTimer = setTimeout(() => { state.q = e.target.value; state.limit = PAGE; render(); }, 120); });
+  $("mapSel").addEventListener("change", (e) => { state.map = e.target.value; render(); });
+  $("agentSel").addEventListener("change", (e) => { state.agent = e.target.value; render(); });
+  $("qSel").addEventListener("change", (e) => { state.qid = e.target.value; state.limit = PAGE; render(); });
+  $("chSel").addEventListener("change", (e) => { state.ch = e.target.value; state.limit = PAGE; render(); });
+  $("lenSel").addEventListener("change", (e) => { state.len = e.target.value; state.limit = PAGE; render(); });
+  $("refresh").addEventListener("click", async () => {
+    const b = $("refresh"); b.disabled = true; b.textContent = "불러오는 중";
+    await loadData(true); renderHeader(); render(); b.disabled = false; b.textContent = "새로고침";
+  });
+
+  let installEvt = null;
+  window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installEvt = e; $("installBtn").hidden = false; });
+  $("installBtn").addEventListener("click", async () => { if (!installEvt) return; installEvt.prompt(); await installEvt.userChoice.catch(() => null); installEvt = null; $("installBtn").hidden = true; });
+  if (window.matchMedia("(display-mode: standalone)").matches) $("installHint").hidden = true;
+
+  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+
+  (async () => {
+    await loadData(false);
+    renderHeader(); render(); tickTimer();
+    setInterval(tickTimer, 1000);
+    if (state.data) store.set(STORE.seen, state.data.generated_at > (state.prevSeen || "") ? new Date().toISOString() : state.prevSeen);
+  })();
+})();
+</script>
+</body>
+</html>
